@@ -2,135 +2,1303 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>VR Connect Hub</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VRMalaysia — Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
 
-<!-- BACKGROUND -->
-<div class="bg"></div>
-<div class="overlay"></div>
-
-<!-- APP -->
-<div class="app">
-
-  <!-- LOGIN SCREEN -->
-  <section id="loginScreen" class="screen active">
-    <h1>VR Connect Hub</h1>
-    <p>Your Gateway to Virtual Worlds</p>
-
-    <div class="card">
-      <input id="email" type="email" placeholder="Email"/>
-      <input id="password" type="password" placeholder="Password"/>
-
-      <button onclick="login()" class="primary">Login</button>
-      <button class="secondary">Sign Up</button>
-
-      <p class="small">Continue as Guest</p>
+<!-- ─────────────────────────────────────────────
+     TOP NAV
+───────────────────────────────────────────── -->
+<header class="site-header">
+  <div class="site-header__inner">
+    <div class="site-header__brand">
+      <span class="brand-dot"></span>
+      <span class="brand-name">VRMalaysia</span>
+      <span class="brand-tag">UI/UX Prototype</span>
     </div>
-  </section>
+    <nav class="sector-nav" id="sectorNav">
+      <button class="snav-btn active" data-sector="home"      onclick="switchSector('home',this)"><i class="ti ti-home"></i> Home</button>
+      <button class="snav-btn"        data-sector="student"   onclick="switchSector('student',this)"><i class="ti ti-school"></i> Student / TVET</button>
+      <button class="snav-btn"        data-sector="health"    onclick="switchSector('health',this)"><i class="ti ti-stethoscope"></i> Healthcare</button>
+      <button class="snav-btn"        data-sector="tourism"   onclick="switchSector('tourism',this)"><i class="ti ti-map-pin"></i> Tourism</button>
+      <button class="snav-btn"        data-sector="industry"  onclick="switchSector('industry',this)"><i class="ti ti-building-factory"></i> Industrial</button>
+      <button class="snav-btn"        data-sector="realestate" onclick="switchSector('realestate',this)"><i class="ti ti-building"></i> Real Estate</button>
+    </nav>
+  </div>
+</header>
 
-  <!-- DASHBOARD -->
-  <section id="homeScreen" class="screen">
+<!-- ─────────────────────────────────────────────
+     MAIN CANVAS
+───────────────────────────────────────────── -->
+<main class="canvas">
 
-    <div class="topbar">
-      <h2>Welcome 👋</h2>
-      <button onclick="logout()">Logout</button>
-    </div>
+<!-- ══════════════════════════════════════════
+     SECTOR: HOME DASHBOARD
+══════════════════════════════════════════ -->
+<section class="sector active" id="sector-home">
+  <div class="sector-header">
+    <h1>Home Dashboard</h1>
+    <p>Personalised launchpad — adapts to the user's role and past activity.</p>
+  </div>
+  <div class="screens-row screens-row--2">
 
-    <div class="grid">
-
-      <div class="card" onclick="openScreen('assistantScreen')">
-        🤖 AI VR Assistant
+    <!-- HOME: Main Dashboard -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-bar ph-purple">
+          <div class="phone-bar__left">
+            <div class="bar-greeting">Good morning,</div>
+            <div class="bar-name">Ahmad Razif 👋</div>
+          </div>
+          <div class="ph-icon-btn"><i class="ti ti-bell"></i></div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-box"><div class="stat-val col-purple">12</div><div class="stat-lbl">Sessions</div></div>
+          <div class="stat-box"><div class="stat-val col-purple">4.8h</div><div class="stat-lbl">VR Time</div></div>
+          <div class="stat-box"><div class="stat-val col-purple">3</div><div class="stat-lbl">Certs</div></div>
+          <div class="stat-box"><div class="stat-val col-green">91%</div><div class="stat-lbl">Avg Score</div></div>
+        </div>
+        <div class="section-label">Continue learning</div>
+        <div class="vr-card">
+          <div class="vr-thumb bg-purple"><i class="ti ti-cpu"></i><span class="live-badge">In progress</span></div>
+          <div class="vr-info">
+            <div class="vr-title">Circuit Wiring — Intermediate</div>
+            <div class="vr-sub">Electrical Engineering · Module 3 of 5</div>
+            <div class="prog-bar"><div class="prog-fill pf-purple" style="width:64%"></div></div>
+            <div class="prog-meta"><span>64% complete</span><span class="col-purple fw-500">Resume →</span></div>
+          </div>
+        </div>
+        <div class="section-label">Your sectors</div>
+        <div class="sector-chips">
+          <div class="sector-chip chip-purple"><i class="ti ti-school"></i> Student</div>
+          <div class="sector-chip chip-teal"><i class="ti ti-stethoscope"></i> Healthcare</div>
+          <div class="sector-chip chip-coral"><i class="ti ti-map-pin"></i> Tourism</div>
+          <div class="sector-chip chip-amber"><i class="ti ti-building-factory"></i> Industrial</div>
+        </div>
+        <div class="section-label">Recommended for you</div>
+        <div class="rec-grid">
+          <div class="rec-card">
+            <div class="rec-thumb bg-teal"><i class="ti ti-wind"></i></div>
+            <div class="rec-info"><div class="rec-title">Calm Forest Therapy</div><div class="rec-sub">15 min · Healthcare</div></div>
+          </div>
+          <div class="rec-card">
+            <div class="rec-thumb bg-coral"><i class="ti ti-building-arch"></i></div>
+            <div class="rec-info"><div class="rec-title">George Town VR Tour</div><div class="rec-sub">25 min · Tourism</div></div>
+          </div>
+          <div class="rec-card">
+            <div class="rec-thumb bg-amber"><i class="ti ti-alert-triangle"></i></div>
+            <div class="rec-info"><div class="rec-title">H2S Drill Simulation</div><div class="rec-sub">30 min · Industrial</div></div>
+          </div>
+          <div class="rec-card">
+            <div class="rec-thumb bg-blue"><i class="ti ti-building"></i></div>
+            <div class="rec-info"><div class="rec-title">PropVR — KLCC Suite</div><div class="rec-sub">20 min · Real Estate</div></div>
+          </div>
+        </div>
+        <div class="alert-box alert-amber"><i class="ti ti-alert-circle"></i> Safety cert expires in 7 days — renew now</div>
+        <div class="phone-nav">
+          <div class="nav-item nav-active"><i class="ti ti-home"></i><span>Home</span></div>
+          <div class="nav-item"><i class="ti ti-compass"></i><span>Explore</span></div>
+          <div class="nav-item"><i class="ti ti-chart-bar"></i><span>Progress</span></div>
+          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
+        </div>
       </div>
+      <div class="screen-caption">Home dashboard — personalised launchpad</div>
+    </div>
 
-      <div class="card" onclick="openScreen('eventScreen')">
-        🎮 Explore VR Events
+    <!-- HOME: Explore Catalogue -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-bar ph-purple">
+          <div class="bar-name">Explore VR Experiences</div>
+        </div>
+        <div class="search-bar"><i class="ti ti-search"></i><span>Search experiences...</span></div>
+        <div class="filter-chips">
+          <span class="fc active">All</span>
+          <span class="fc">Education</span>
+          <span class="fc">Healthcare</span>
+          <span class="fc">Tourism</span>
+          <span class="fc">Industrial</span>
+          <span class="fc">Real Estate</span>
+        </div>
+        <div class="exp-list">
+          <div class="exp-item">
+            <div class="exp-thumb bg-purple"><i class="ti ti-cpu"></i></div>
+            <div class="exp-info">
+              <div class="exp-title">Circuit Wiring Simulation</div>
+              <div class="exp-meta">⭐ 4.8 · 1,240 learners · 45 min</div>
+              <div class="tag-row"><span class="tag tag-purple">TVET</span><span class="tag tag-blue">Intermediate</span></div>
+            </div>
+            <i class="ti ti-bookmark-filled col-purple"></i>
+          </div>
+          <div class="exp-item">
+            <div class="exp-thumb bg-teal"><i class="ti ti-wind"></i></div>
+            <div class="exp-info">
+              <div class="exp-title">Anxiety Exposure Therapy</div>
+              <div class="exp-meta">⭐ 4.9 · 850 users · 15 min</div>
+              <div class="tag-row"><span class="tag tag-teal">Healthcare</span></div>
+            </div>
+            <i class="ti ti-bookmark"></i>
+          </div>
+          <div class="exp-item">
+            <div class="exp-thumb bg-coral"><i class="ti ti-building-arch"></i></div>
+            <div class="exp-info">
+              <div class="exp-title">George Town Heritage Walk</div>
+              <div class="exp-meta">⭐ 4.7 · 3,100 explorers · 25 min</div>
+              <div class="tag-row"><span class="tag tag-coral">UNESCO</span><span class="tag tag-green">Multilingual</span></div>
+            </div>
+            <i class="ti ti-bookmark"></i>
+          </div>
+          <div class="exp-item">
+            <div class="exp-thumb bg-amber"><i class="ti ti-alert-triangle"></i></div>
+            <div class="exp-info">
+              <div class="exp-title">H2S Gas Leak Emergency</div>
+              <div class="exp-meta">⭐ 4.6 · 620 trainees · 30 min</div>
+              <div class="tag-row"><span class="tag tag-amber">Industrial</span><span class="tag tag-red">Advanced</span></div>
+            </div>
+            <i class="ti ti-bookmark"></i>
+          </div>
+          <div class="exp-item">
+            <div class="exp-thumb bg-blue"><i class="ti ti-building"></i></div>
+            <div class="exp-info">
+              <div class="exp-title">PropVR — KLCC Penthouse</div>
+              <div class="exp-meta">⭐ 4.8 · 520 buyers · 20 min</div>
+              <div class="tag-row"><span class="tag tag-blue">Real Estate</span></div>
+            </div>
+            <i class="ti ti-bookmark"></i>
+          </div>
+        </div>
+        <div class="phone-nav">
+          <div class="nav-item"><i class="ti ti-home"></i><span>Home</span></div>
+          <div class="nav-item nav-active"><i class="ti ti-compass"></i><span>Explore</span></div>
+          <div class="nav-item"><i class="ti ti-chart-bar"></i><span>Progress</span></div>
+          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
+        </div>
       </div>
+      <div class="screen-caption">Explore catalogue — search & filter across all sectors</div>
+    </div>
 
-      <div class="card" onclick="openScreen('safetyScreen')">
-        🛡 Safety Center
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTOR: STUDENT / TVET
+══════════════════════════════════════════ -->
+<section class="sector" id="sector-student">
+  <div class="sector-header">
+    <h1>VRLearn — Student / TVET</h1>
+    <p>Immersive virtual labs for TVET and university students — from module selection to post-session assessment.</p>
+  </div>
+  <div class="screens-row screens-row--3">
+
+    <!-- STU A: Lab Catalogue -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-bar ph-purple">
+          <div class="bar-eyebrow">VRLearn · TVET</div>
+          <div class="bar-name">Virtual Lab Catalogue</div>
+          <div class="inline-filters">
+            <span class="ifc active">All</span><span class="ifc">Electrical</span><span class="ifc">Mechanical</span><span class="ifc">Civil</span><span class="ifc">Chemistry</span>
+          </div>
+        </div>
+        <div class="search-bar"><i class="ti ti-search"></i><span>Search labs...</span></div>
+        <div class="section-label">Continue where you left off</div>
+        <div class="vr-card">
+          <div class="vr-thumb bg-purple"><i class="ti ti-cpu"></i><span class="live-badge">In progress</span></div>
+          <div class="vr-info">
+            <div class="vr-title">Circuit Wiring — Intermediate</div>
+            <div class="vr-sub">Module 3 of 5 · Electrical Engineering</div>
+            <div class="prog-bar"><div class="prog-fill pf-purple" style="width:64%"></div></div>
+            <div class="prog-meta"><span>64% complete</span><span class="col-purple fw-500">Resume →</span></div>
+          </div>
+        </div>
+        <div class="section-label">Recommended next</div>
+        <div class="env-grid">
+          <div class="env-card">
+            <div class="env-top bg-green"><i class="ti ti-flask"></i></div>
+            <div class="env-label">Chemistry Lab</div>
+            <div class="env-sub">Acid-base titration</div>
+          </div>
+          <div class="env-card">
+            <div class="env-top bg-blue"><i class="ti ti-engine"></i></div>
+            <div class="env-label">Engine Disassembly</div>
+            <div class="env-sub">Mechanical · Adv.</div>
+          </div>
+          <div class="env-card">
+            <div class="env-top bg-pink"><i class="ti ti-building-bridge"></i></div>
+            <div class="env-label">Bridge Load Test</div>
+            <div class="env-sub">Civil Engineering</div>
+          </div>
+          <div class="env-card">
+            <div class="env-top bg-amber"><i class="ti ti-tool"></i></div>
+            <div class="env-label">Welding Sim</div>
+            <div class="env-sub">Manufacturing</div>
+          </div>
+        </div>
+        <div class="section-label">Browse all modules</div>
+        <div class="list-item">
+          <div class="list-icon li-purple"><i class="ti ti-bolt"></i></div>
+          <div class="list-text"><div class="list-title">Electrical Installations — Basic</div><div class="list-sub">5 modules · 120 min total</div></div>
+          <i class="ti ti-chevron-right muted"></i>
+        </div>
+        <div class="list-item">
+          <div class="list-icon li-blue"><i class="ti ti-engine"></i></div>
+          <div class="list-text"><div class="list-title">Automotive Engineering</div><div class="list-sub">4 modules · 90 min total</div></div>
+          <i class="ti ti-chevron-right muted"></i>
+        </div>
+        <div class="list-item">
+          <div class="list-icon li-green"><i class="ti ti-flask"></i></div>
+          <div class="list-text"><div class="list-title">Chemistry Laboratory</div><div class="list-sub">6 modules · 150 min total</div></div>
+          <i class="ti ti-chevron-right muted"></i>
+        </div>
+        <div class="phone-nav">
+          <div class="nav-item nav-active nav-purple"><i class="ti ti-layout-grid"></i><span>Labs</span></div>
+          <div class="nav-item"><i class="ti ti-player-play"></i><span>Sessions</span></div>
+          <div class="nav-item"><i class="ti ti-chart-bar"></i><span>Progress</span></div>
+          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
+        </div>
       </div>
+      <div class="screen-caption">Screen A — VR lab catalogue & module selection</div>
+    </div>
 
-      <div class="card" onclick="openScreen('learnScreen')">
-        🎓 Learning Hub
+    <!-- STU B: Live Lab Session -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-bar ph-dark">
+          <div class="bar-live-row">
+            <div class="live-dot-wrap"><div class="live-dot"></div><span>Live · 12:47</span></div>
+            <i class="ti ti-headset bar-icon-light"></i>
+          </div>
+        </div>
+        <div class="vr-viewport vp-purple">
+          <i class="ti ti-cpu vp-icon"></i>
+          <div class="vp-label">VR workspace rendering</div>
+          <div class="vp-tags">
+            <span class="vp-tag vp-tag-purple">Hand tracking</span>
+            <span class="vp-tag vp-tag-dim">360° view</span>
+          </div>
+        </div>
+        <div class="section-label">Current objective</div>
+        <div class="obj-box obj-purple">
+          <div class="obj-step col-purple">Step 4 / 7 — Connect neutral wire</div>
+          <div class="obj-desc">Locate the blue neutral wire and connect to terminal N on the distribution board using the virtual pliers.</div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-box"><div class="metric-val col-purple">91%</div><div class="metric-lbl">Accuracy</div></div>
+          <div class="metric-box"><div class="metric-val col-teal">1</div><div class="metric-lbl">Errors</div></div>
+          <div class="metric-box"><div class="metric-val col-purple">2</div><div class="metric-lbl">Hints left</div></div>
+          <div class="metric-box"><div class="metric-val col-purple">3</div><div class="metric-lbl">Steps left</div></div>
+        </div>
+        <div class="hint-box hint-purple">
+          <i class="ti ti-bulb hint-icon col-purple"></i>
+          <div class="hint-text">The neutral wire is always blue in Malaysian wiring standards (MS IEC 60446). Look for the blue sheath near the main breaker.</div>
+        </div>
+        <div class="section-label">Step progress</div>
+        <div class="step-prog">
+          <div class="sp-step sp-done"></div><div class="sp-step sp-done"></div><div class="sp-step sp-done"></div>
+          <div class="sp-step sp-active sp-purple"></div>
+          <div class="sp-step sp-todo"></div><div class="sp-step sp-todo"></div><div class="sp-step sp-todo"></div>
+        </div>
+        <div class="action-row">
+          <button class="act-btn"><i class="ti ti-pause"></i> Pause</button>
+          <button class="act-btn"><i class="ti ti-rotate"></i> Redo</button>
+          <button class="act-btn act-danger"><i class="ti ti-x"></i> Exit</button>
+        </div>
+        <div class="phone-nav">
+          <div class="nav-item"><i class="ti ti-layout-grid"></i><span>Labs</span></div>
+          <div class="nav-item nav-active nav-purple"><i class="ti ti-player-play"></i><span>Sessions</span></div>
+          <div class="nav-item"><i class="ti ti-chart-bar"></i><span>Progress</span></div>
+          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
+        </div>
       </div>
-
+      <div class="screen-caption">Screen B — Live VR lab: step-by-step guidance & real-time feedback</div>
     </div>
 
-    <div class="card full">
-      🚀 Recommended VR Experience:
-      <br><b>Space Exploration World</b>
-      <button>Join Now</button>
+    <!-- STU C: Post-Session Results -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-bar ph-purple">
+          <div class="bar-eyebrow">Session complete</div>
+          <div class="bar-name">Circuit Wiring — Module 3</div>
+        </div>
+        <div class="result-hero">
+          <div class="result-ring result-ring-purple">A</div>
+          <div class="result-title">Great performance, Ahmad!</div>
+          <div class="result-sub">Top 15% of learners this week</div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-box"><div class="metric-val col-purple">91%</div><div class="metric-lbl">Accuracy</div></div>
+          <div class="metric-box"><div class="metric-val col-teal">12:47</div><div class="metric-lbl">Time taken</div></div>
+          <div class="metric-box"><div class="metric-val col-amber">1</div><div class="metric-lbl">Errors</div></div>
+        </div>
+        <div class="section-label">Skill breakdown</div>
+        <div class="skill-list">
+          <div class="skill-row">
+            <div class="skill-name">Wire identification</div>
+            <div class="skill-score col-purple">100%</div>
+          </div>
+          <div class="prog-bar"><div class="prog-fill pf-purple" style="width:100%"></div></div>
+          <div class="skill-row">
+            <div class="skill-name">Terminal connection</div>
+            <div class="skill-score col-purple">88%</div>
+          </div>
+          <div class="prog-bar"><div class="prog-fill pf-purple" style="width:88%"></div></div>
+          <div class="skill-row">
+            <div class="skill-name">Safety protocol</div>
+            <div class="skill-score col-teal">95%</div>
+          </div>
+          <div class="prog-bar"><div class="prog-fill pf-teal" style="width:95%"></div></div>
+          <div class="skill-row">
+            <div class="skill-name">Speed efficiency</div>
+            <div class="skill-score col-amber">72%</div>
+          </div>
+          <div class="prog-bar"><div class="prog-fill pf-amber" style="width:72%"></div></div>
+        </div>
+        <div class="unlock-box unlock-purple">
+          <i class="ti ti-lock-open"></i>
+          <div>
+            <div class="unlock-title">Module 4 unlocked</div>
+            <div class="unlock-sub">Advanced panel installation — tap to begin</div>
+          </div>
+        </div>
+        <div class="dual-action">
+          <button class="act-btn"><i class="ti ti-refresh"></i> Redo</button>
+          <button class="act-btn-primary btn-purple">Continue to Module 4 →</button>
+        </div>
+        <div class="phone-nav">
+          <div class="nav-item"><i class="ti ti-layout-grid"></i><span>Labs</span></div>
+          <div class="nav-item"><i class="ti ti-player-play"></i><span>Sessions</span></div>
+          <div class="nav-item nav-active nav-purple"><i class="ti ti-chart-bar"></i><span>Progress</span></div>
+          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
+        </div>
+      </div>
+      <div class="screen-caption">Screen C — Post-session results & skill breakdown</div>
     </div>
 
-  </section>
-
-  <!-- AI ASSISTANT -->
-  <section id="assistantScreen" class="screen">
-    <div class="topbar">
-      <h2>AI VR Assistant</h2>
-      <button onclick="openScreen('homeScreen')">Back</button>
+    <!-- STU D: Progress & Certifications -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-bar ph-purple">
+          <div class="bar-name">My Progress</div>
+          <div class="bar-eyebrow">June 2026</div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-box"><div class="stat-val col-purple">12</div><div class="stat-lbl">Sessions</div></div>
+          <div class="stat-box"><div class="stat-val col-purple">84%</div><div class="stat-lbl">Avg Score</div></div>
+          <div class="stat-box"><div class="stat-val col-teal">3</div><div class="stat-lbl">Badges</div></div>
+        </div>
+        <div class="section-label">Weekly activity</div>
+        <div class="bar-chart">
+          <div class="bc-col"><div class="bc-bar" style="height:40%"></div><span>M</span></div>
+          <div class="bc-col"><div class="bc-bar" style="height:70%"></div><span>T</span></div>
+          <div class="bc-col"><div class="bc-bar" style="height:30%"></div><span>W</span></div>
+          <div class="bc-col"><div class="bc-bar bc-bar-active" style="height:85%"></div><span class="col-purple">T</span></div>
+          <div class="bc-col"><div class="bc-bar" style="height:55%"></div><span>F</span></div>
+          <div class="bc-col"><div class="bc-bar" style="height:20%"></div><span>S</span></div>
+          <div class="bc-col"><div class="bc-bar" style="height:10%"></div><span>S</span></div>
+        </div>
+        <div class="section-label">Certifications earned</div>
+        <div class="list-item">
+          <div class="list-icon li-purple"><i class="ti ti-certificate"></i></div>
+          <div class="list-text"><div class="list-title">Circuit Wiring — Basic</div><div class="list-sub">Issued 15 Jun 2026 · Score: 91%</div></div>
+          <i class="ti ti-download muted"></i>
+        </div>
+        <div class="list-item">
+          <div class="list-icon li-teal"><i class="ti ti-certificate"></i></div>
+          <div class="list-text"><div class="list-title">Chemistry Lab Safety</div><div class="list-sub">Issued 10 Jun 2026 · Score: 88%</div></div>
+          <i class="ti ti-download muted"></i>
+        </div>
+        <div class="list-item">
+          <div class="list-icon li-amber"><i class="ti ti-certificate"></i></div>
+          <div class="list-text"><div class="list-title">Welding Basics — Level 1</div><div class="list-sub">Issued 2 Jun 2026 · Score: 85%</div></div>
+          <i class="ti ti-download muted"></i>
+        </div>
+        <div class="phone-nav">
+          <div class="nav-item"><i class="ti ti-layout-grid"></i><span>Labs</span></div>
+          <div class="nav-item"><i class="ti ti-player-play"></i><span>Sessions</span></div>
+          <div class="nav-item nav-active nav-purple"><i class="ti ti-chart-bar"></i><span>Progress</span></div>
+          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
+        </div>
+      </div>
+      <div class="screen-caption">Screen D — Progress analytics & downloadable certificates</div>
     </div>
 
-    <div class="chat">
-      <div class="msg bot">Welcome to VR Connect Hub 👋</div>
-      <div class="msg bot">Let’s learn VR basics step-by-step.</div>
-      <div class="msg user">How do I move?</div>
-      <div class="msg bot">Use joystick or teleport gestures in VR.</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTOR: HEALTHCARE
+══════════════════════════════════════════ -->
+<section class="sector" id="sector-health">
+  <div class="sector-header">
+    <h1>VRHeal — Healthcare</h1>
+    <p>VR-based therapy and rehabilitation — covering both the patient experience and the clinician dashboard.</p>
+  </div>
+  <div class="screens-row screens-row--3">
+
+    <!-- HEALTH A: Therapy Programme Selector -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-bar ph-teal">
+          <div class="bar-eyebrow">VRHeal · Therapy</div>
+          <div class="bar-name">Choose your programme</div>
+          <div class="inline-filters">
+            <span class="ifc ifc-teal active">All</span><span class="ifc ifc-teal">Anxiety</span><span class="ifc ifc-teal">Phobia</span><span class="ifc ifc-teal">Rehab</span>
+          </div>
+        </div>
+        <div class="prescribed-notice">
+          <i class="ti ti-stethoscope"></i>
+          <span>Prescribed by Dr. Amirah Yusof · Updated 20 Jun</span>
+        </div>
+        <div class="section-label">Your prescribed sessions</div>
+        <div class="vr-card">
+          <div class="vr-thumb bg-teal"><i class="ti ti-wind"></i><span class="live-badge lb-teal">Active</span></div>
+          <div class="vr-info">
+            <div class="vr-title">Calm Forest — Anxiety Relief</div>
+            <div class="vr-sub">Guided breathing · 15 min · Session 3 of 8</div>
+            <div class="prog-bar"><div class="prog-fill pf-teal" style="width:37%"></div></div>
+            <div class="prog-meta"><span>Session 3 of 8</span><span class="col-teal fw-500">Begin →</span></div>
+          </div>
+        </div>
+        <div class="vr-card">
+          <div class="vr-thumb bg-green"><i class="ti ti-human"></i></div>
+          <div class="vr-info">
+            <div class="vr-title">Stroke Rehab — Upper Limb</div>
+            <div class="vr-sub">Motor exercises · 20 min · Daily</div>
+            <div class="prog-bar"><div class="prog-fill pf-teal" style="width:70%"></div></div>
+          </div>
+        </div>
+        <div class="vr-card">
+          <div class="vr-thumb bg-blue"><i class="ti ti-drone"></i></div>
+          <div class="vr-info">
+            <div class="vr-title">Heights Exposure — Acrophobia</div>
+            <div class="vr-sub">Graded exposure · 12 min · Level 2 of 5</div>
+            <div class="prog-bar"><div class="prog-fill pf-blue" style="width:20%"></div></div>
+          </div>
+        </div>
+        <div class="section-label">Self-guided sessions</div>
+        <div class="list-item">
+          <div class="list-icon li-teal"><i class="ti ti-heart-rate-monitor"></i></div>
+          <div class="list-text"><div class="list-title">Mindfulness Breathing</div><div class="list-sub">10 min · Anytime</div></div>
+          <i class="ti ti-chevron-right muted"></i>
+        </div>
+        <div class="list-item">
+          <div class="list-icon li-blue"><i class="ti ti-zzz"></i></div>
+          <div class="list-text"><div class="list-title">Sleep Preparation VR</div><div class="list-sub">8 min · Before bed</div></div>
+          <i class="ti ti-chevron-right muted"></i>
+        </div>
+        <div class="phone-nav">
+          <div class="nav-item nav-active nav-teal"><i class="ti ti-layout-grid"></i><span>Programmes</span></div>
+          <div class="nav-item"><i class="ti ti-player-play"></i><span>Sessions</span></div>
+          <div class="nav-item"><i class="ti ti-chart-line"></i><span>Mood log</span></div>
+          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
+        </div>
+      </div>
+      <div class="screen-caption">Screen A — Clinician-prescribed therapy programme</div>
     </div>
 
-    <button class="primary">Start Practice Mode</button>
-  </section>
-
-  <!-- EVENTS -->
-  <section id="eventScreen" class="screen">
-    <div class="topbar">
-      <h2>VR Events</h2>
-      <button onclick="openScreen('homeScreen')">Back</button>
+    <!-- HEALTH B: Active VR Therapy -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-bar ph-dark">
+          <div class="bar-live-row">
+            <div class="live-dot-wrap live-teal"><div class="live-dot"></div><span>Session active · 06:14</span></div>
+            <span class="biometric">♥ 72 bpm</span>
+          </div>
+        </div>
+        <div class="vr-viewport vp-teal">
+          <i class="ti ti-trees vp-icon"></i>
+          <div class="vp-label">Forest environment · Calm preset</div>
+          <div class="vp-tags">
+            <span class="vp-tag vp-tag-teal">Spatial audio on</span>
+            <span class="vp-tag vp-tag-dim">Haptic vest</span>
+          </div>
+        </div>
+        <div class="section-label">Guided instruction</div>
+        <div class="obj-box obj-teal">
+          <div class="obj-step col-teal">Breathing exercise — exhale phase</div>
+          <div class="obj-desc">Slowly breathe out for 6 counts. Watch the leaves fall gently in sync with your breath.</div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-box"><div class="metric-val col-teal">72</div><div class="metric-lbl">Heart rate</div></div>
+          <div class="metric-box"><div class="metric-val col-teal">Low</div><div class="metric-lbl">Stress level</div></div>
+          <div class="metric-box"><div class="metric-val col-purple">3/8</div><div class="metric-lbl">Sessions</div></div>
+        </div>
+        <div class="hint-box hint-teal">
+          <i class="ti ti-info-circle hint-icon col-teal"></i>
+          <div class="hint-text">Your biometric data shows reduced stress compared to your last session. You are making measurable progress.</div>
+        </div>
+        <div class="section-label">Calm intensity</div>
+        <div class="intensity-bar">
+          <div class="ib-fill" style="width:60%;background:#0F6E56"></div>
+        </div>
+        <div class="intensity-labels"><span>Mild</span><span>Moderate</span><span>Deep calm</span></div>
+        <div class="action-row">
+          <button class="act-btn"><i class="ti ti-volume"></i> Audio</button>
+          <button class="act-btn"><i class="ti ti-pause"></i> Pause</button>
+          <button class="act-btn act-danger"><i class="ti ti-emergency-bed"></i> SOS</button>
+        </div>
+        <div class="phone-nav">
+          <div class="nav-item"><i class="ti ti-layout-grid"></i><span>Programmes</span></div>
+          <div class="nav-item nav-active nav-teal"><i class="ti ti-player-play"></i><span>Sessions</span></div>
+          <div class="nav-item"><i class="ti ti-chart-line"></i><span>Mood log</span></div>
+          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
+        </div>
+      </div>
+      <div class="screen-caption">Screen B — Live VR therapy: biometrics & guided breathing</div>
     </div>
 
-    <div class="list">
-      <div class="card">🎮 Cyberpunk VR Party</div>
-      <div class="card">🌌 Space Exploration Meetup</div>
-      <div class="card">🎨 VR Art Exhibition</div>
+    <!-- HEALTH C: Clinician Dashboard -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-bar ph-teal">
+          <div class="bar-eyebrow">Dr. Amirah's view</div>
+          <div class="bar-name">Patient progress</div>
+        </div>
+        <div class="patient-row">
+          <div class="avatar av-teal">SL</div>
+          <div class="patient-info">
+            <div class="patient-name">Siti Liyana, 34</div>
+            <div class="patient-sub">GAD programme · 3 sessions completed</div>
+          </div>
+          <i class="ti ti-dots-vertical muted"></i>
+        </div>
+        <div class="metric-row">
+          <div class="metric-box"><div class="metric-val col-teal">↓18%</div><div class="metric-lbl">Anxiety score</div></div>
+          <div class="metric-box"><div class="metric-val col-purple">72 bpm</div><div class="metric-lbl">Avg heart rate</div></div>
+          <div class="metric-box"><div class="metric-val col-teal">Good</div><div class="metric-lbl">Engagement</div></div>
+        </div>
+        <div class="section-label">Session trend — GAD-7 anxiety score</div>
+        <div class="trend-chart">
+          <div class="tc-col"><div class="tc-bar" style="height:85%;background:#5DCAA5"></div><span>S1</span></div>
+          <div class="tc-col"><div class="tc-bar" style="height:72%;background:#1D9E75"></div><span>S2</span></div>
+          <div class="tc-col"><div class="tc-bar" style="height:58%;background:#0F6E56"></div><span class="col-teal">S3</span></div>
+          <div class="tc-col"><div class="tc-bar tc-forecast" style="height:42%"></div><span>S4</span></div>
+          <div class="tc-col"><div class="tc-bar tc-forecast" style="height:30%"></div><span>S5</span></div>
+        </div>
+        <div class="trend-note">Anxiety decreasing — patient on track</div>
+        <div class="section-label">Adjust next session</div>
+        <div class="adjust-row">
+          <div class="adjust-box adjust-active">
+            <div class="adjust-label col-teal">Intensity</div>
+            <div class="adjust-val">Level 3</div>
+            <div class="dot-scale">
+              <div class="ds-dot ds-on"></div><div class="ds-dot ds-on"></div><div class="ds-dot ds-on"></div>
+              <div class="ds-dot"></div><div class="ds-dot"></div>
+            </div>
+          </div>
+          <div class="adjust-box">
+            <div class="adjust-label">Duration</div>
+            <div class="adjust-val">20 min</div>
+            <div class="adjust-note">↑ from 15 min</div>
+          </div>
+          <div class="adjust-box">
+            <div class="adjust-label">Environment</div>
+            <div class="adjust-val">Forest</div>
+            <div class="adjust-note">Patient preference</div>
+          </div>
+        </div>
+        <div class="section-label">Mood log (patient-reported)</div>
+        <div class="mood-row">
+          <div class="mood-entry"><div class="mood-emoji">😰</div><div class="mood-date">Session 1</div></div>
+          <div class="mood-entry"><div class="mood-emoji">😐</div><div class="mood-date">Session 2</div></div>
+          <div class="mood-entry"><div class="mood-emoji">🙂</div><div class="mood-date">Session 3</div></div>
+          <div class="mood-entry mood-forecast"><div class="mood-emoji">😊</div><div class="mood-date">Target S4</div></div>
+        </div>
+        <button class="act-btn-primary btn-teal" style="margin:0 0.85rem 0.5rem;display:block">Update prescription &amp; schedule</button>
+        <div class="phone-nav">
+          <div class="nav-item"><i class="ti ti-users"></i><span>Patients</span></div>
+          <div class="nav-item nav-active nav-teal"><i class="ti ti-chart-line"></i><span>Progress</span></div>
+          <div class="nav-item"><i class="ti ti-calendar"></i><span>Schedule</span></div>
+          <div class="nav-item"><i class="ti ti-settings"></i><span>Settings</span></div>
+        </div>
+      </div>
+      <div class="screen-caption">Screen C — Clinician view: patient trends & session adjustment</div>
     </div>
-  </section>
 
-  <!-- SAFETY -->
-  <section id="safetyScreen" class="screen">
-    <div class="topbar">
-      <h2>Safety Center</h2>
-      <button onclick="openScreen('homeScreen')">Back</button>
+    <!-- HEALTH D: Post-Therapy Summary -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-bar ph-teal">
+          <div class="bar-eyebrow">Session complete</div>
+          <div class="bar-name">Calm Forest — Session 3</div>
+        </div>
+        <div class="result-hero">
+          <div class="result-ring result-ring-teal">✓</div>
+          <div class="result-title">Well done, Siti Liyana!</div>
+          <div class="result-sub">Lowest stress reading yet — keep going</div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-box"><div class="metric-val col-teal">72</div><div class="metric-lbl">Avg bpm</div></div>
+          <div class="metric-box"><div class="metric-val col-teal">Low</div><div class="metric-lbl">Final stress</div></div>
+          <div class="metric-box"><div class="metric-val col-teal">14:32</div><div class="metric-lbl">Duration</div></div>
+        </div>
+        <div class="section-label">How are you feeling now?</div>
+        <div class="mood-picker">
+          <div class="mp-opt"><span>😰</span><div>Anxious</div></div>
+          <div class="mp-opt"><span>😐</span><div>Neutral</div></div>
+          <div class="mp-opt mp-sel"><span>🙂</span><div>Better</div></div>
+          <div class="mp-opt"><span>😊</span><div>Calm</div></div>
+        </div>
+        <div class="hint-box hint-teal">
+          <i class="ti ti-notes hint-icon col-teal"></i>
+          <div class="hint-text">Your mood log will be shared with Dr. Amirah before your next session. Any notes to add?</div>
+        </div>
+        <textarea class="notes-field" placeholder="Optional notes for your therapist..."></textarea>
+        <div class="section-label">Next session</div>
+        <div class="next-session-card">
+          <div class="ns-icon"><i class="ti ti-calendar"></i></div>
+          <div class="ns-info">
+            <div class="ns-title">Session 4 — Calm Forest Level 3</div>
+            <div class="ns-sub">Scheduled Thu 26 Jun · 3:00 PM</div>
+          </div>
+        </div>
+        <div class="dual-action">
+          <button class="act-btn"><i class="ti ti-home"></i> Home</button>
+          <button class="act-btn-primary btn-teal">Submit &amp; finish →</button>
+        </div>
+        <div class="phone-nav">
+          <div class="nav-item"><i class="ti ti-layout-grid"></i><span>Programmes</span></div>
+          <div class="nav-item"><i class="ti ti-player-play"></i><span>Sessions</span></div>
+          <div class="nav-item nav-active nav-teal"><i class="ti ti-chart-line"></i><span>Mood log</span></div>
+          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
+        </div>
+      </div>
+      <div class="screen-caption">Screen D — Post-therapy mood check & next session scheduling</div>
     </div>
 
-    <div class="card safe">
-      Status: SAFE ENVIRONMENT
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTOR: TOURISM
+══════════════════════════════════════════ -->
+<section class="sector" id="sector-tourism">
+  <div class="sector-header">
+    <h1>WarisanXR — Heritage Tourism</h1>
+    <p>Immersive VR tours of Malaysian UNESCO sites — from destination browsing to real-world trip planning.</p>
+  </div>
+  <div class="screens-row screens-row--3">
+
+    <!-- TOUR A: Destination Browser -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-bar ph-coral">
+          <div class="bar-eyebrow">WarisanXR · Malaysia Heritage</div>
+          <div class="bar-name">Discover Malaysia in VR</div>
+          <div class="inline-filters">
+            <span class="ifc ifc-coral active">All</span><span class="ifc ifc-coral">UNESCO</span><span class="ifc ifc-coral">Nature</span><span class="ifc ifc-coral">City</span>
+          </div>
+        </div>
+        <div class="search-bar"><i class="ti ti-search"></i><span>Search destinations...</span><i class="ti ti-map col-coral" style="margin-left:auto"></i></div>
+        <div class="section-label">Featured experience</div>
+        <div class="vr-card">
+          <div class="vr-thumb bg-coral"><i class="ti ti-building-arch"></i><span class="live-badge lb-coral">UNESCO</span><span class="star-badge">★ 4.9</span></div>
+          <div class="vr-info">
+            <div class="vr-title">George Town Heritage Walk</div>
+            <div class="vr-sub">Penang · 360° tour · 25 min · EN / BM / 中文</div>
+            <div class="tag-row"><span class="tag tag-coral">Heritage</span><span class="tag tag-green">Multilingual</span><span class="tag tag-blue">AI narrated</span></div>
+          </div>
+        </div>
+        <div class="section-label">Explore more destinations</div>
+        <div class="env-grid">
+          <div class="env-card">
+            <div class="env-top bg-amber"><i class="ti ti-building-mosque"></i></div>
+            <div class="env-label">A'Famosa, Malacca</div>
+            <div class="env-sub">Historical fort · 18 min</div>
+          </div>
+          <div class="env-card">
+            <div class="env-top bg-green"><i class="ti ti-trees"></i></div>
+            <div class="env-label">Kinabalu Park</div>
+            <div class="env-sub">Borneo rainforest</div>
+          </div>
+          <div class="env-card">
+            <div class="env-top bg-blue"><i class="ti ti-antenna"></i></div>
+            <div class="env-label">Petronas Towers</div>
+            <div class="env-sub">KL Skyline · Night</div>
+          </div>
+          <div class="env-card">
+            <div class="env-top bg-pink"><i class="ti ti-fish"></i></div>
+            <div class="env-label">Sipadan Island</div>
+            <div class="env-sub">Underwater dive</div>
+          </div>
+        </div>
+        <div class="section-label">Recently added</div>
+        <div class="list-item">
+          <div class="list-icon li-amber"><i class="ti ti-building-castle"></i></div>
+          <div class="list-text"><div class="list-title">Kota Belud, Sabah</div><div class="list-sub">Cultural village · 30 min · NEW</div></div>
+          <i class="ti ti-chevron-right muted"></i>
+        </div>
+        <div class="phone-nav">
+          <div class="nav-item nav-active nav-coral"><i class="ti ti-compass"></i><span>Discover</span></div>
+          <div class="nav-item"><i class="ti ti-player-play"></i><span>My tours</span></div>
+          <div class="nav-item"><i class="ti ti-bookmark"></i><span>Saved</span></div>
+          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
+        </div>
+      </div>
+      <div class="screen-caption">Screen A — Heritage destination browser & tour catalogue</div>
     </div>
 
-    <button>🚨 Report User</button>
-    <button>🚫 Block User</button>
-    <button>🆘 Emergency Exit VR</button>
-  </section>
-
-  <!-- LEARNING -->
-  <section id="learnScreen" class="screen">
-    <div class="topbar">
-      <h2>Learning Hub</h2>
-      <button onclick="openScreen('homeScreen')">Back</button>
+    <!-- TOUR B: Active VR Heritage Tour -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-bar ph-dark">
+          <div class="bar-live-row">
+            <div class="live-dot-wrap live-coral"><div class="live-dot"></div><span>VR Tour · Stop 3/8</span></div>
+            <i class="ti ti-volume bar-icon-light"></i>
+          </div>
+        </div>
+        <div class="vr-viewport vp-coral">
+          <i class="ti ti-building-arch vp-icon"></i>
+          <div class="vp-label">Clan Jetties · 360° panoramic view</div>
+          <div class="vp-tags">
+            <span class="vp-tag vp-tag-coral">AI narration: EN</span>
+            <span class="vp-tag vp-tag-dim">Haptic feedback</span>
+          </div>
+        </div>
+        <div class="section-label">Current stop</div>
+        <div class="obj-box obj-coral">
+          <div class="obj-step col-coral">Chew Jetty — Clan jetties, 1800s</div>
+          <div class="obj-desc">These wooden jetties housed Hokkien Chinese settlers. Look around to explore the living quarters and temple still in use today.</div>
+        </div>
+        <div class="hint-box hint-coral">
+          <i class="ti ti-bulb hint-icon col-coral"></i>
+          <div class="hint-text">Tap any glowing hotspot in your view to unlock a deeper story about that object or location.</div>
+        </div>
+        <div class="section-label">Tour progress</div>
+        <div class="step-prog">
+          <div class="sp-step sp-done"></div><div class="sp-step sp-done"></div><div class="sp-step sp-done"></div>
+          <div class="sp-step sp-active sp-coral"></div>
+          <div class="sp-step sp-todo"></div><div class="sp-step sp-todo"></div><div class="sp-step sp-todo"></div><div class="sp-step sp-todo"></div>
+        </div>
+        <div class="section-label">Nearby hotspots</div>
+        <div class="hotspot-row">
+          <div class="hotspot"><i class="ti ti-building-community"></i><span>Temple</span></div>
+          <div class="hotspot"><i class="ti ti-camera"></i><span>Gallery</span></div>
+          <div class="hotspot"><i class="ti ti-messages"></i><span>Stories</span></div>
+          <div class="hotspot"><i class="ti ti-map-2"></i><span>History</span></div>
+        </div>
+        <div class="action-row">
+          <button class="act-btn"><i class="ti ti-arrow-left"></i> Prev</button>
+          <button class="act-btn-primary btn-coral">Next: Fort Cornwallis →</button>
+          <button class="act-btn"><i class="ti ti-map"></i> Map</button>
+        </div>
+        <div class="phone-nav">
+          <div class="nav-item"><i class="ti ti-compass"></i><span>Discover</span></div>
+          <div class="nav-item nav-active nav-coral"><i class="ti ti-player-play"></i><span>My tours</span></div>
+          <div class="nav-item"><i class="ti ti-bookmark"></i><span>Saved</span></div>
+          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
+        </div>
+      </div>
+      <div class="screen-caption">Screen B — Live 360° tour with AI narration & interactive hotspots</div>
     </div>
 
-    <div class="list">
-      <div class="card">VR Basics for Beginners</div>
-      <div class="card">Unity VR Development</div>
-      <div class="card">3D Interaction Design</div>
+    <!-- TOUR C: Post-VR Trip Planner -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-bar ph-coral">
+          <div class="bar-eyebrow">After your VR tour</div>
+          <div class="bar-name">Plan your real visit</div>
+        </div>
+        <div class="badge-notice bn-coral">
+          <i class="ti ti-award"></i>
+          <span>8 stops · 2 hotspots unlocked · Penang Heritage badge earned</span>
+        </div>
+        <div class="map-placeholder">
+          <div class="map-label">George Town, Penang — interactive map</div>
+          <div class="map-pin" style="top:30%;left:35%"></div>
+          <div class="map-pin" style="top:55%;left:60%"></div>
+          <div class="map-pin" style="top:45%;left:48%"></div>
+          <div class="map-pin map-pin-dim" style="top:65%;left:30%"></div>
+        </div>
+        <div class="section-label">Recommended itinerary (2 days)</div>
+        <div class="list-item">
+          <div class="list-icon li-coral"><i class="ti ti-building-arch"></i></div>
+          <div class="list-text"><div class="list-title">Day 1 AM — Clan Jetties walk</div><div class="list-sub">You explored this in VR · 45 min walk</div></div>
+          <i class="ti ti-circle-check col-teal"></i>
+        </div>
+        <div class="list-item">
+          <div class="list-icon li-coral"><i class="ti ti-building-castle"></i></div>
+          <div class="list-text"><div class="list-title">Day 1 PM — Fort Cornwallis</div><div class="list-sub">VR preview unlocked · Free entry</div></div>
+          <i class="ti ti-circle-check col-teal"></i>
+        </div>
+        <div class="list-item">
+          <div class="list-icon li-amber"><i class="ti ti-chef-hat"></i></div>
+          <div class="list-text"><div class="list-title">Day 2 — Street food trail</div><div class="list-sub">Add to plan · 3.8 km route</div></div>
+          <i class="ti ti-plus muted"></i>
+        </div>
+        <div class="dual-action">
+          <button class="act-btn"><i class="ti ti-share"></i> Share</button>
+          <button class="act-btn-primary btn-coral">Book hotel in Penang →</button>
+        </div>
+        <div class="phone-nav">
+          <div class="nav-item"><i class="ti ti-compass"></i><span>Discover</span></div>
+          <div class="nav-item"><i class="ti ti-player-play"></i><span>My tours</span></div>
+          <div class="nav-item nav-active nav-coral"><i class="ti ti-bookmark"></i><span>Saved</span></div>
+          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
+        </div>
+      </div>
+      <div class="screen-caption">Screen C — Post-VR trip planner: map, itinerary & real booking</div>
     </div>
-  </section>
 
-</div>
+    <!-- TOUR D: Heritage Badge & Community -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-bar ph-coral">
+          <div class="bar-name">My Heritage Journey</div>
+          <div class="bar-eyebrow">Achievements & community</div>
+        </div>
+        <div class="result-hero">
+          <div class="result-ring result-ring-coral">🏛️</div>
+          <div class="result-title">Heritage Explorer</div>
+          <div class="result-sub">3 UNESCO sites visited · 14 hotspots unlocked</div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-box"><div class="stat-val col-coral">3</div><div class="stat-lbl">VR Tours</div></div>
+          <div class="stat-box"><div class="stat-val col-coral">14</div><div class="stat-lbl">Hotspots</div></div>
+          <div class="stat-box"><div class="stat-val col-amber">2</div><div class="stat-lbl">Badges</div></div>
+        </div>
+        <div class="section-label">Badges earned</div>
+        <div class="badge-grid">
+          <div class="badge-card badge-earned"><i class="ti ti-building-arch"></i><span>Penang</span></div>
+          <div class="badge-card badge-earned"><i class="ti ti-building-castle"></i><span>Malacca</span></div>
+          <div class="badge-card badge-locked"><i class="ti ti-lock"></i><span>Sabah</span></div>
+          <div class="badge-card badge-locked"><i class="ti ti-lock"></i><span>Sarawak</span></div>
+        </div>
+        <div class="section-label">Community highlights</div>
+        <div class="community-item">
+          <div class="avatar av-coral">LW</div>
+          <div class="community-text">
+            <div class="list-title">Lee Wei explored Sipadan Island</div>
+            <div class="list-sub">30 min dive · Shared a review · 2h ago</div>
+          </div>
+        </div>
+        <div class="community-item">
+          <div class="avatar av-amber">NR</div>
+          <div class="community-text">
+            <div class="list-title">Nurul completed Malacca tour</div>
+            <div class="list-sub">Earned Malacca badge · 5h ago</div>
+          </div>
+        </div>
+        <div class="phone-nav">
+          <div class="nav-item"><i class="ti ti-compass"></i><span>Discover</span></div>
+          <div class="nav-item"><i class="ti ti-player-play"></i><span>My tours</span></div>
+          <div class="nav-item"><i class="ti ti-bookmark"></i><span>Saved</span></div>
+          <div class="nav-item nav-active nav-coral"><i class="ti ti-user"></i><span>Profile</span></div>
+        </div>
+      </div>
+      <div class="screen-caption">Screen D — Heritage badges, community feed & achievements</div>
+    </div>
 
-<script src="script.js"></script>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTOR: INDUSTRIAL
+══════════════════════════════════════════ -->
+<section class="sector" id="sector-industry">
+  <div class="sector-header">
+    <h1>SafeTrain VR — Industrial Safety</h1>
+    <p>VR safety training for oil & gas, manufacturing, and construction — covering both the worker and manager view.</p>
+  </div>
+  <div class="screens-row screens-row--3">
+
+    <!-- IND A: Manager Dashboard -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-bar ph-amber">
+          <div class="bar-eyebrow">SafeTrain VR · Manager</div>
+          <div class="bar-name">Training assignments</div>
+          <div class="inline-filters">
+            <span class="ifc ifc-amber active">All teams</span><span class="ifc ifc-amber">Platform A</span><span class="ifc ifc-amber">Maintenance</span>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-box"><div class="stat-val col-amber">24</div><div class="stat-lbl">Assigned</div></div>
+          <div class="stat-box"><div class="stat-val col-teal">18</div><div class="stat-lbl">Certified</div></div>
+          <div class="stat-box"><div class="stat-val col-red">3</div><div class="stat-lbl">Overdue</div></div>
+        </div>
+        <div class="alert-box alert-red"><i class="ti ti-alert-triangle"></i> 3 workers overdue — H2S safety cert expires Friday</div>
+        <div class="section-label">Module performance</div>
+        <div class="skill-list">
+          <div class="skill-row"><div class="skill-name">H2S gas leak response</div><div class="skill-score col-amber">75%</div></div>
+          <div class="prog-bar"><div class="prog-fill pf-amber" style="width:75%"></div></div>
+          <div class="skill-row"><div class="skill-name">Fire evacuation drill</div><div class="skill-score col-teal">92%</div></div>
+          <div class="prog-bar"><div class="prog-fill pf-teal" style="width:92%"></div></div>
+          <div class="skill-row"><div class="skill-name">PPE donning procedure</div><div class="skill-score col-red">61%</div></div>
+          <div class="prog-bar"><div class="prog-fill pf-red" style="width:61%"></div></div>
+        </div>
+        <div class="section-label">Workers pending</div>
+        <div class="list-item">
+          <div class="avatar av-amber" style="width:28px;height:28px;font-size:10px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center">MH</div>
+          <div class="list-text"><div class="list-title">Muhammad Hafiz</div><div class="list-sub">H2S cert · Due in 2 days</div></div>
+          <span class="status-pill pill-red">Urgent</span>
+        </div>
+        <div class="list-item">
+          <div class="avatar av-amber" style="width:28px;height:28px;font-size:10px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center">ZA</div>
+          <div class="list-text"><div class="list-title">Zulaikha Ahmad</div><div class="list-sub">PPE procedure · Due in 4 days</div></div>
+          <span class="status-pill pill-amber">Due soon</span>
+        </div>
+        <button class="act-btn-primary btn-amber" style="margin:0.4rem 0.85rem 0.5rem;display:block">Assign new training session</button>
+        <div class="phone-nav">
+          <div class="nav-item nav-active nav-amber"><i class="ti ti-layout-grid"></i><span>Dashboard</span></div>
+          <div class="nav-item"><i class="ti ti-users"></i><span>Workers</span></div>
+          <div class="nav-item"><i class="ti ti-certificate"></i><span>Certs</span></div>
+          <div class="nav-item"><i class="ti ti-settings"></i><span>Settings</span></div>
+        </div>
+      </div>
+      <div class="screen-caption">Screen A — Manager dashboard: team assignments & overdue alerts</div>
+    </div>
+
+    <!-- IND B: Worker VR Safety Scenario -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-bar ph-dark">
+          <div class="bar-live-row">
+            <div class="live-dot-wrap"><div class="live-dot"></div><span>VR Drill · 04:52</span></div>
+            <span style="font-size:10px;color:#EF9F27">Platform A</span>
+          </div>
+        </div>
+        <div class="vr-viewport vp-amber">
+          <i class="ti ti-alert-triangle vp-icon"></i>
+          <div class="vp-label">Offshore platform simulation</div>
+          <div class="vp-tags">
+            <span class="vp-tag vp-tag-amber">Danger zone active</span>
+            <span class="vp-tag vp-tag-dim">Full PPE required</span>
+          </div>
+        </div>
+        <div class="alert-box alert-red" style="margin:0.5rem 0.85rem 0.3rem"><i class="ti ti-alert-triangle"></i> Emergency: H2S gas leak detected. Alarm sounding — 3 minutes to muster.</div>
+        <div class="hint-box hint-amber">
+          <i class="ti ti-info-circle hint-icon col-amber"></i>
+          <div class="hint-text">H2S is heavier than air. Move upwind and to elevated ground. SCBA must be secured within 30 seconds of alarm.</div>
+        </div>
+        <div class="section-label">Response checklist</div>
+        <div class="checklist">
+          <div class="cl-item cl-done"><div class="cl-dot cl-dot-done"><i class="ti ti-check"></i></div><div class="cl-text">Identify leak source</div></div>
+          <div class="cl-item cl-done"><div class="cl-dot cl-dot-done"><i class="ti ti-check"></i></div><div class="cl-text">Activate alarm panel</div></div>
+          <div class="cl-item cl-active"><div class="cl-dot cl-dot-active">3</div><div class="cl-text fw-500 col-amber">Don SCBA breathing apparatus</div></div>
+          <div class="cl-item"><div class="cl-dot">4</div><div class="cl-text muted">Evacuate to muster point</div></div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-box"><div class="metric-val col-amber">2:41</div><div class="metric-lbl">Time left</div></div>
+          <div class="metric-box"><div class="metric-val col-teal">3/4</div><div class="metric-lbl">Steps done</div></div>
+          <div class="metric-box"><div class="metric-val col-red">1</div><div class="metric-lbl">Error</div></div>
+        </div>
+        <div class="action-row">
+          <button class="act-btn"><i class="ti ti-pause"></i> Pause</button>
+          <button class="act-btn"><i class="ti ti-rotate"></i> Restart</button>
+          <button class="act-btn act-danger"><i class="ti ti-x"></i> Exit</button>
+        </div>
+        <div class="phone-nav">
+          <div class="nav-item"><i class="ti ti-layout-grid"></i><span>Dashboard</span></div>
+          <div class="nav-item nav-active nav-amber"><i class="ti ti-player-play"></i><span>Drill</span></div>
+          <div class="nav-item"><i class="ti ti-certificate"></i><span>Certs</span></div>
+          <div class="nav-item"><i class="ti ti-settings"></i><span>Settings</span></div>
+        </div>
+      </div>
+      <div class="screen-caption">Screen B — Worker view: live H2S emergency VR drill</div>
+    </div>
+
+    <!-- IND C: Cert Wallet -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-bar ph-amber">
+          <div class="bar-eyebrow">SafeTrain VR</div>
+          <div class="bar-name">My certifications</div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-box"><div class="stat-val col-teal">5</div><div class="stat-lbl">Valid</div></div>
+          <div class="stat-box"><div class="stat-val col-amber">1</div><div class="stat-lbl">Expiring</div></div>
+          <div class="stat-box"><div class="stat-val col-red">0</div><div class="stat-lbl">Expired</div></div>
+        </div>
+        <div class="section-label">Certificates</div>
+        <div class="list-item">
+          <div class="list-icon li-amber"><i class="ti ti-shield-check"></i></div>
+          <div class="list-text"><div class="list-title">H2S Gas Safety — Level 2</div><div class="list-sub">Valid until Dec 2026 · Score: 94%</div></div>
+          <i class="ti ti-download muted"></i>
+        </div>
+        <div class="list-item">
+          <div class="list-icon li-green"><i class="ti ti-fire-extinguisher"></i></div>
+          <div class="list-text"><div class="list-title">Fire Evacuation Warden</div><div class="list-sub">Valid until Aug 2026 · Score: 89%</div></div>
+          <i class="ti ti-download muted"></i>
+        </div>
+        <div class="list-item">
+          <div class="list-icon li-red"><i class="ti ti-helmet"></i></div>
+          <div class="list-text"><div class="list-title col-red">PPE Donning Procedure</div><div class="list-sub col-red">Expires in 7 days — renew now</div></div>
+          <i class="ti ti-alert-circle col-red"></i>
+        </div>
+        <div class="list-item">
+          <div class="list-icon li-blue"><i class="ti ti-droplet"></i></div>
+          <div class="list-text"><div class="list-title">Spill Containment Response</div><div class="list-sub">Valid until Mar 2027 · Score: 91%</div></div>
+          <i class="ti ti-download muted"></i>
+        </div>
+        <div class="list-item">
+          <div class="list-icon li-purple"><i class="ti ti-bolt"></i></div>
+          <div class="list-text"><div class="list-title">Electrical Lockout/Tagout</div><div class="list-sub">Valid until Jan 2027 · Score: 87%</div></div>
+          <i class="ti ti-download muted"></i>
+        </div>
+        <div class="dual-action">
+          <button class="act-btn"><i class="ti ti-share"></i> Share all</button>
+          <button class="act-btn-primary btn-amber">Renew PPE cert →</button>
+        </div>
+        <div class="phone-nav">
+          <div class="nav-item"><i class="ti ti-layout-grid"></i><span>Dashboard</span></div>
+          <div class="nav-item"><i class="ti ti-users"></i><span>Workers</span></div>
+          <div class="nav-item nav-active nav-amber"><i class="ti ti-certificate"></i><span>Certs</span></div>
+          <div class="nav-item"><i class="ti ti-settings"></i><span>Settings</span></div>
+        </div>
+      </div>
+      <div class="screen-caption">Screen C — Worker cert wallet: status, expiry & one-tap renewal</div>
+    </div>
+
+    <!-- IND D: Drill Debrief -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-bar ph-amber">
+          <div class="bar-eyebrow">Drill complete</div>
+          <div class="bar-name">H2S Gas Leak Scenario</div>
+        </div>
+        <div class="result-hero">
+          <div class="result-ring result-ring-amber">B+</div>
+          <div class="result-title">Good response, Hafiz!</div>
+          <div class="result-sub">1 procedural error — review SCBA donning sequence</div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-box"><div class="metric-val col-amber">82%</div><div class="metric-lbl">Score</div></div>
+          <div class="metric-box"><div class="metric-val col-teal">2:31</div><div class="metric-lbl">Evacuation time</div></div>
+          <div class="metric-box"><div class="metric-val col-red">1</div><div class="metric-lbl">Errors</div></div>
+        </div>
+        <div class="section-label">Debrief — what happened</div>
+        <div class="hint-box hint-amber">
+          <i class="ti ti-alert-triangle hint-icon col-amber"></i>
+          <div class="hint-text">Error at step 3: SCBA face seal was not fully checked before proceeding. This would cause gas exposure in a real emergency.</div>
+        </div>
+        <div class="section-label">Skill breakdown</div>
+        <div class="skill-list">
+          <div class="skill-row"><div class="skill-name">Hazard identification</div><div class="skill-score col-teal">100%</div></div>
+          <div class="prog-bar"><div class="prog-fill pf-teal" style="width:100%"></div></div>
+          <div class="skill-row"><div class="skill-name">Alarm activation</div><div class="skill-score col-teal">95%</div></div>
+          <div class="prog-bar"><div class="prog-fill pf-teal" style="width:95%"></div></div>
+          <div class="skill-row"><div class="skill-name">SCBA donning procedure</div><div class="skill-score col-red">60%</div></div>
+          <div class="prog-bar"><div class="prog-fill pf-red" style="width:60%"></div></div>
+          <div class="skill-row"><div class="skill-name">Evacuation route</div><div class="skill-score col-teal">90%</div></div>
+          <div class="prog-bar"><div class="prog-fill pf-teal" style="width:90%"></div></div>
+        </div>
+        <div class="unlock-box unlock-amber">
+          <i class="ti ti-lock-open"></i>
+          <div>
+            <div class="unlock-title">Score 85%+ to earn H2S Level 2 cert</div>
+            <div class="unlock-sub">You need 3 more marks — retry the drill</div>
+          </div>
+        </div>
+        <div class="dual-action">
+          <button class="act-btn"><i class="ti ti-refresh"></i> Retry drill</button>
+          <button class="act-btn-primary btn-amber">Review SCBA guide →</button>
+        </div>
+        <div class="phone-nav">
+          <div class="nav-item"><i class="ti ti-layout-grid"></i><span>Dashboard</span></div>
+          <div class="nav-item nav-active nav-amber"><i class="ti ti-player-play"></i><span>Drill</span></div>
+          <div class="nav-item"><i class="ti ti-certificate"></i><span>Certs</span></div>
+          <div class="nav-item"><i class="ti ti-settings"></i><span>Settings</span></div>
+        </div>
+      </div>
+      <div class="screen-caption">Screen D — Post-drill debrief: error review & retry flow</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTOR: REAL ESTATE
+══════════════════════════════════════════ -->
+<section class="sector" id="sector-realestate">
+  <div class="sector-header">
+    <h1>PropVR — Virtual Real Estate</h1>
+    <p>Immersive 3D property walkthroughs, AI interior design overlays, and direct agent booking.</p>
+  </div>
+  <div class="screens-row screens-row--3">
+
+    <!-- RE A: Property Listings -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-bar ph-blue">
+          <div class="bar-eyebrow">PropVR · Real Estate</div>
+          <div class="bar-name">Browse properties</div>
+          <div class="inline-filters">
+            <span class="ifc ifc-blue active">All</span><span class="ifc ifc-blue">Buy</span><span class="ifc ifc-blue">Rent</span><span class="ifc ifc-blue">Commercial</span>
+          </div>
+        </div>
+        <div class="search-bar"><i class="ti ti-search"></i><span>KL, Petaling Jaya, Cyberjaya...</span><i class="ti ti-adjustments col-blue" style="margin-left:auto"></i></div>
+        <div class="section-label">Featured VR listings</div>
+        <div class="vr-card">
+          <div class="vr-thumb bg-blue"><i class="ti ti-building"></i><span class="live-badge lb-blue">VR Ready</span><span class="star-badge">★ 4.8</span></div>
+          <div class="vr-info">
+            <div class="vr-title">KLCC Penthouse — 3 Bed, 2 Bath</div>
+            <div class="vr-sub">Kuala Lumpur · RM 2.4M · 1,850 sqft</div>
+            <div class="tag-row"><span class="tag tag-blue">VR Tour</span><span class="tag tag-green">AI Design</span><span class="tag tag-purple">Furnished</span></div>
+          </div>
+        </div>
+        <div class="exp-list">
+          <div class="exp-item">
+            <div class="exp-thumb bg-blue"><i class="ti ti-home"></i></div>
+            <div class="exp-info">
+              <div class="exp-title">Mont Kiara — 2 Bed Condo</div>
+              <div class="exp-meta">RM 950K · VR tour available</div>
+            </div>
+            <i class="ti ti-bookmark muted"></i>
+          </div>
+          <div class="exp-item">
+            <div class="exp-thumb bg-purple"><i class="ti ti-building-skyscraper"></i></div>
+            <div class="exp-info">
+              <div class="exp-title">Bangsar South — Studio</div>
+              <div class="exp-meta">RM 2,800/mo · VR tour available</div>
+            </div>
+            <i class="ti ti-bookmark muted"></i>
+          </div>
+          <div class="exp-item">
+            <div class="exp-thumb bg-teal"><i class="ti ti-home-2"></i></div>
+            <div class="exp-info">
+              <div class="exp-title">Cyberjaya — 4 Bed Terrace</div>
+              <div class="exp-meta">RM 780K · VR tour available</div>
+            </div>
+            <i class="ti ti-bookmark-filled col-blue"></i>
+          </div>
+        </div>
+        <div class="phone-nav">
+          <div class="nav-item nav-active nav-blue"><i class="ti ti-building"></i><span>Browse</span></div>
+          <div class="nav-item"><i class="ti ti-player-play"></i><span>VR Tours</span></div>
+          <div class="nav-item"><i class="ti ti-bookmark"></i><span>Saved</span></div>
+          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
+        </div>
+      </div>
+      <div class="screen-caption">Screen A — Property listings with VR-ready filter</div>
+    </div>
+
+    <!-- RE B: Active VR Property Tour -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-bar ph-dark">
+          <div class="bar-live-row">
+            <div class="live-dot-wrap live-blue"><div class="live-dot"></div><span>VR Tour · Living Room</span></div>
+            <i class="ti ti-3d-cube-sphere bar-icon-light"></i>
+          </div>
+        </div>
+        <div class="vr-viewport vp-blue">
+          <i class="ti ti-building vp-icon"></i>
+          <div class="vp-label">KLCC Penthouse · 360° walkthrough</div>
+          <div class="vp-tags">
+            <span class="vp-tag vp-tag-blue">Hand navigation</span>
+            <span class="vp-tag vp-tag-dim">Natural light mode</span>
+          </div>
+        </div>
+        <div class="section-label">Current room</div>
+        <div class="obj-box obj-blue">
+          <div class="obj-step col-blue">Living Room — 420 sqft</div>
+          <div class="obj-desc">High ceiling at 14ft, floor-to-ceiling windows facing KLCC. Tap any surface to view material details or apply AI design styles.</div>
+        </div>
+        <div class="section-label">Room navigator</div>
+        <div class="room-nav">
+          <div class="room-btn room-active"><i class="ti ti-sofa"></i><span>Living</span></div>
+          <div class="room-btn"><i class="ti ti-bed"></i><span>Master</span></div>
+          <div class="room-btn"><i class="ti ti-chef-hat"></i><span>Kitchen</span></div>
+          <div class="room-btn"><i class="ti ti-bath"></i><span>Bath</span></div>
+          <div class="room-btn"><i class="ti ti-building-community"></i><span>Balcony</span></div>
+        </div>
+        <div class="section-label">AI design overlay</div>
+        <div class="design-styles">
+          <div class="ds-opt ds-active"><i class="ti ti-comet"></i><span>Modern</span></div>
+          <div class="ds-opt"><i class="ti ti-leaf"></i><span>Scandinavian</span></div>
+          <div class="ds-opt"><i class="ti ti-diamond"></i><span>Luxe</span></div>
+          <div class="ds-opt"><i class="ti ti-sun"></i><span>Minimalist</span></div>
+        </div>
+        <div class="action-row">
+          <button class="act-btn"><i class="ti ti-ruler"></i> Measure</button>
+          <button class="act-btn"><i class="ti ti-camera"></i> Snapshot</button>
+          <button class="act-btn-primary btn-blue">Book a viewing →</button>
+        </div>
+        <div class="phone-nav">
+          <div class="nav-item"><i class="ti ti-building"></i><span>Browse</span></div>
+          <div class="nav-item nav-active nav-blue"><i class="ti ti-player-play"></i><span>VR Tours</span></div>
+          <div class="nav-item"><i class="ti ti-bookmark"></i><span>Saved</span></div>
+          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
+        </div>
+      </div>
+      <div class="screen-caption">Screen B — Live VR property walkthrough with AI design overlay</div>
+    </div>
+
+    <!-- RE C: Agent Booking -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-bar ph-blue">
+          <div class="bar-eyebrow">After your VR tour</div>
+          <div class="bar-name">Book a physical visit</div>
+        </div>
+        <div class="badge-notice bn-blue">
+          <i class="ti ti-building"></i>
+          <span>KLCC Penthouse · 5 rooms explored · AI design saved</span>
+        </div>
+        <div class="section-label">Your agent</div>
+        <div class="agent-card">
+          <div class="avatar av-blue">AH</div>
+          <div class="agent-info">
+            <div class="agent-name">Ahmad Hafizi</div>
+            <div class="agent-sub">IQI Realty · ⭐ 4.9 · 312 deals</div>
+          </div>
+          <div class="agent-actions">
+            <i class="ti ti-brand-whatsapp col-teal"></i>
+            <i class="ti ti-phone col-blue"></i>
+          </div>
+        </div>
+        <div class="section-label">Choose a visit slot</div>
+        <div class="slot-grid">
+          <div class="slot-btn slot-active">Sat 28 Jun<br><span>10:00 AM</span></div>
+          <div class="slot-btn">Sat 28 Jun<br><span>2:00 PM</span></div>
+          <div class="slot-btn">Sun 29 Jun<br><span>11:00 AM</span></div>
+          <div class="slot-btn slot-taken">Sun 29 Jun<br><span>Taken</span></div>
+        </div>
+        <div class="section-label">Property summary</div>
+        <div class="prop-summary">
+          <div class="ps-row"><span class="ps-label">Address</span><span class="ps-val">KLCC, Kuala Lumpur</span></div>
+          <div class="ps-row"><span class="ps-label">Price</span><span class="ps-val col-blue">RM 2,400,000</span></div>
+          <div class="ps-row"><span class="ps-label">Size</span><span class="ps-val">1,850 sqft · 3 bed, 2 bath</span></div>
+          <div class="ps-row"><span class="ps-label">VR rooms explored</span><span class="ps-val col-teal">5 / 5</span></div>
+        </div>
+        <div class="dual-action">
+          <button class="act-btn"><i class="ti ti-share"></i> Share</button>
+          <button class="act-btn-primary btn-blue">Confirm visit →</button>
+        </div>
+        <div class="phone-nav">
+          <div class="nav-item"><i class="ti ti-building"></i><span>Browse</span></div>
+          <div class="nav-item"><i class="ti ti-player-play"></i><span>VR Tours</span></div>
+          <div class="nav-item nav-active nav-blue"><i class="ti ti-bookmark"></i><span>Saved</span></div>
+          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
+        </div>
+      </div>
+      <div class="screen-caption">Screen C — Post-VR tour: agent booking & physical visit scheduling</div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div>VRMalaysia — UI/UX Prototype · Assignment Submission 2026</div>
+  <div>Built with HTML &amp; CSS · No frameworks · GitHub-ready</div>
+</footer>
+
+<script>
+function switchSector(id, btn) {
+  document.querySelectorAll('.sector').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.snav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sector-' + id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
 </body>
 </html>
