@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VR Connect Hub</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+
+<body>
+
+<!-- BACKGROUND -->
+<div class="bg"></div>
+<div class="overlay"></div>
+
+<!-- APP -->
+<div class="app">
+
+  <!-- LOGIN SCREEN -->
+  <section id="loginScreen" class="screen active">
+    <h1>VR Connect Hub</h1>
+    <p>Your Gateway to Virtual Worlds</p>
+
+    <div class="card">
+      <input id="email" type="email" placeholder="Email"/>
+      <input id="password" type="password" placeholder="Password"/>
+
+      <button onclick="login()" class="primary">Login</button>
+      <button class="secondary">Sign Up</button>
+
+      <p class="small">Continue as Guest</p>
+    </div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section id="homeScreen" class="screen">
+
+    <div class="topbar">
+      <h2>Welcome 👋</h2>
+      <button onclick="logout()">Logout</button>
+    </div>
+
+    <div class="grid">
+
+      <div class="card" onclick="openScreen('assistantScreen')">
+        🤖 AI VR Assistant
+      </div>
+
+      <div class="card" onclick="openScreen('eventScreen')">
+        🎮 Explore VR Events
+      </div>
+
+      <div class="card" onclick="openScreen('safetyScreen')">
+        🛡 Safety Center
+      </div>
+
+      <div class="card" onclick="openScreen('learnScreen')">
+        🎓 Learning Hub
+      </div>
+
+    </div>
+
+    <div class="card full">
+      🚀 Recommended VR Experience:
+      <br><b>Space Exploration World</b>
+      <button>Join Now</button>
+    </div>
+
+  </section>
+
+  <!-- AI ASSISTANT -->
+  <section id="assistantScreen" class="screen">
+    <div class="topbar">
+      <h2>AI VR Assistant</h2>
+      <button onclick="openScreen('homeScreen')">Back</button>
+    </div>
+
+    <div class="chat">
+      <div class="msg bot">Welcome to VR Connect Hub 👋</div>
+      <div class="msg bot">Let’s learn VR basics step-by-step.</div>
+      <div class="msg user">How do I move?</div>
+      <div class="msg bot">Use joystick or teleport gestures in VR.</div>
+    </div>
+
+    <button class="primary">Start Practice Mode</button>
+  </section>
+
+  <!-- EVENTS -->
+  <section id="eventScreen" class="screen">
+    <div class="topbar">
+      <h2>VR Events</h2>
+      <button onclick="openScreen('homeScreen')">Back</button>
+    </div>
+
+    <div class="list">
+      <div class="card">🎮 Cyberpunk VR Party</div>
+      <div class="card">🌌 Space Exploration Meetup</div>
+      <div class="card">🎨 VR Art Exhibition</div>
+    </div>
+  </section>
+
+  <!-- SAFETY -->
+  <section id="safetyScreen" class="screen">
+    <div class="topbar">
+      <h2>Safety Center</h2>
+      <button onclick="openScreen('homeScreen')">Back</button>
+    </div>
+
+    <div class="card safe">
+      Status: SAFE ENVIRONMENT
+    </div>
+
+    <button>🚨 Report User</button>
+    <button>🚫 Block User</button>
+    <button>🆘 Emergency Exit VR</button>
+  </section>
+
+  <!-- LEARNING -->
+  <section id="learnScreen" class="screen">
+    <div class="topbar">
+      <h2>Learning Hub</h2>
+      <button onclick="openScreen('homeScreen')">Back</button>
+    </div>
+
+    <div class="list">
+      <div class="card">VR Basics for Beginners</div>
+      <div class="card">Unity VR Development</div>
+      <div class="card">3D Interaction Design</div>
+    </div>
+  </section>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
