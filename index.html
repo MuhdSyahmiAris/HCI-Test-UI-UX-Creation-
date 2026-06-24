@@ -1,1304 +1,1310 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VRMalaysia — Prototype</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css" />
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WauVR - High-Fidelity Interactive Academic Prototype</title>
+    
+    <!-- External Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
+
+    <!-- CSS Design System & Custom Overrides -->
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #030712;
+            color: #f3f4f6;
+        }
+        
+        .code-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Glassmorphism Classes */
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card {
+            background: rgba(31, 41, 55, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Ambient Glow Effects */
+        .glow-accent {
+            box-shadow: 0 0 30px rgba(6, 222, 250, 0.15);
+        }
+
+        .glow-gold {
+            box-shadow: 0 0 30px rgba(227, 168, 87, 0.15);
+        }
+
+        /* Interactive Animations */
+        .btn-pulse {
+            animation: pulse-border 2s infinite;
+        }
+
+        @keyframes pulse-border {
+            0% {
+                box-shadow: 0 0 0 0 rgba(227, 168, 87, 0.5);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(227, 168, 87, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(227, 168, 87, 0);
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #030712;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #374151;
+        }
+
+        /* Perspective grid styling for 3D simulation spaces */
+        .grid-3d {
+            perspective: 500px;
+        }
+
+        /* Batik overlay decoration texture */
+        .batik-overlay {
+            opacity: 0.04;
+            background-image: radial-gradient(#e3a857 1px, transparent 1px), radial-gradient(#e3a857 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+        }
+    </style>
 </head>
-<body>
+<body class="h-full flex flex-col overflow-hidden">
 
-<!-- ─────────────────────────────────────────────
-     TOP NAV
-───────────────────────────────────────────── -->
-<header class="site-header">
-  <div class="site-header__inner">
-    <div class="site-header__brand">
-      <span class="brand-dot"></span>
-      <span class="brand-name">VRMalaysia</span>
-      <span class="brand-tag">UI/UX Prototype</span>
-    </div>
-    <nav class="sector-nav" id="sectorNav">
-      <button class="snav-btn active" data-sector="home"      onclick="switchSector('home',this)"><i class="ti ti-home"></i> Home</button>
-      <button class="snav-btn"        data-sector="student"   onclick="switchSector('student',this)"><i class="ti ti-school"></i> Student / TVET</button>
-      <button class="snav-btn"        data-sector="health"    onclick="switchSector('health',this)"><i class="ti ti-stethoscope"></i> Healthcare</button>
-      <button class="snav-btn"        data-sector="tourism"   onclick="switchSector('tourism',this)"><i class="ti ti-map-pin"></i> Tourism</button>
-      <button class="snav-btn"        data-sector="industry"  onclick="switchSector('industry',this)"><i class="ti ti-building-factory"></i> Industrial</button>
-      <button class="snav-btn"        data-sector="realestate" onclick="switchSector('realestate',this)"><i class="ti ti-building"></i> Real Estate</button>
-    </nav>
-  </div>
-</header>
-
-<!-- ─────────────────────────────────────────────
-     MAIN CANVAS
-───────────────────────────────────────────── -->
-<main class="canvas">
-
-<!-- ══════════════════════════════════════════
-     SECTOR: HOME DASHBOARD
-══════════════════════════════════════════ -->
-<section class="sector active" id="sector-home">
-  <div class="sector-header">
-    <h1>Home Dashboard</h1>
-    <p>Personalised launchpad — adapts to the user's role and past activity.</p>
-  </div>
-  <div class="screens-row screens-row--2">
-
-    <!-- HOME: Main Dashboard -->
-    <div class="phone-wrap">
-      <div class="phone">
-        <div class="phone-bar ph-purple">
-          <div class="phone-bar__left">
-            <div class="bar-greeting">Good morning,</div>
-            <div class="bar-name">Ahmad Razif 👋</div>
-          </div>
-          <div class="ph-icon-btn"><i class="ti ti-bell"></i></div>
-        </div>
-        <div class="stat-row">
-          <div class="stat-box"><div class="stat-val col-purple">12</div><div class="stat-lbl">Sessions</div></div>
-          <div class="stat-box"><div class="stat-val col-purple">4.8h</div><div class="stat-lbl">VR Time</div></div>
-          <div class="stat-box"><div class="stat-val col-purple">3</div><div class="stat-lbl">Certs</div></div>
-          <div class="stat-box"><div class="stat-val col-green">91%</div><div class="stat-lbl">Avg Score</div></div>
-        </div>
-        <div class="section-label">Continue learning</div>
-        <div class="vr-card">
-          <div class="vr-thumb bg-purple"><i class="ti ti-cpu"></i><span class="live-badge">In progress</span></div>
-          <div class="vr-info">
-            <div class="vr-title">Circuit Wiring — Intermediate</div>
-            <div class="vr-sub">Electrical Engineering · Module 3 of 5</div>
-            <div class="prog-bar"><div class="prog-fill pf-purple" style="width:64%"></div></div>
-            <div class="prog-meta"><span>64% complete</span><span class="col-purple fw-500">Resume →</span></div>
-          </div>
-        </div>
-        <div class="section-label">Your sectors</div>
-        <div class="sector-chips">
-          <div class="sector-chip chip-purple"><i class="ti ti-school"></i> Student</div>
-          <div class="sector-chip chip-teal"><i class="ti ti-stethoscope"></i> Healthcare</div>
-          <div class="sector-chip chip-coral"><i class="ti ti-map-pin"></i> Tourism</div>
-          <div class="sector-chip chip-amber"><i class="ti ti-building-factory"></i> Industrial</div>
-        </div>
-        <div class="section-label">Recommended for you</div>
-        <div class="rec-grid">
-          <div class="rec-card">
-            <div class="rec-thumb bg-teal"><i class="ti ti-wind"></i></div>
-            <div class="rec-info"><div class="rec-title">Calm Forest Therapy</div><div class="rec-sub">15 min · Healthcare</div></div>
-          </div>
-          <div class="rec-card">
-            <div class="rec-thumb bg-coral"><i class="ti ti-building-arch"></i></div>
-            <div class="rec-info"><div class="rec-title">George Town VR Tour</div><div class="rec-sub">25 min · Tourism</div></div>
-          </div>
-          <div class="rec-card">
-            <div class="rec-thumb bg-amber"><i class="ti ti-alert-triangle"></i></div>
-            <div class="rec-info"><div class="rec-title">H2S Drill Simulation</div><div class="rec-sub">30 min · Industrial</div></div>
-          </div>
-          <div class="rec-card">
-            <div class="rec-thumb bg-blue"><i class="ti ti-building"></i></div>
-            <div class="rec-info"><div class="rec-title">PropVR — KLCC Suite</div><div class="rec-sub">20 min · Real Estate</div></div>
-          </div>
-        </div>
-        <div class="alert-box alert-amber"><i class="ti ti-alert-circle"></i> Safety cert expires in 7 days — renew now</div>
-        <div class="phone-nav">
-          <div class="nav-item nav-active"><i class="ti ti-home"></i><span>Home</span></div>
-          <div class="nav-item"><i class="ti ti-compass"></i><span>Explore</span></div>
-          <div class="nav-item"><i class="ti ti-chart-bar"></i><span>Progress</span></div>
-          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
-        </div>
-      </div>
-      <div class="screen-caption">Home dashboard — personalised launchpad</div>
-    </div>
-
-    <!-- HOME: Explore Catalogue -->
-    <div class="phone-wrap">
-      <div class="phone">
-        <div class="phone-bar ph-purple">
-          <div class="bar-name">Explore VR Experiences</div>
-        </div>
-        <div class="search-bar"><i class="ti ti-search"></i><span>Search experiences...</span></div>
-        <div class="filter-chips">
-          <span class="fc active">All</span>
-          <span class="fc">Education</span>
-          <span class="fc">Healthcare</span>
-          <span class="fc">Tourism</span>
-          <span class="fc">Industrial</span>
-          <span class="fc">Real Estate</span>
-        </div>
-        <div class="exp-list">
-          <div class="exp-item">
-            <div class="exp-thumb bg-purple"><i class="ti ti-cpu"></i></div>
-            <div class="exp-info">
-              <div class="exp-title">Circuit Wiring Simulation</div>
-              <div class="exp-meta">⭐ 4.8 · 1,240 learners · 45 min</div>
-              <div class="tag-row"><span class="tag tag-purple">TVET</span><span class="tag tag-blue">Intermediate</span></div>
+    <!-- Top Status Header -->
+    <header class="flex-shrink-0 glass-panel border-b border-gray-800 px-6 py-3 flex items-center justify-between z-40">
+        <div class="flex items-center gap-3">
+            <div class="p-2 bg-gradient-to-tr from-[#06defa] to-[#e3a857] rounded-xl flex items-center justify-center">
+                <span class="material-icons-outlined text-gray-950 font-bold text-xl">view_in_ar</span>
             </div>
-            <i class="ti ti-bookmark-filled col-purple"></i>
-          </div>
-          <div class="exp-item">
-            <div class="exp-thumb bg-teal"><i class="ti ti-wind"></i></div>
-            <div class="exp-info">
-              <div class="exp-title">Anxiety Exposure Therapy</div>
-              <div class="exp-meta">⭐ 4.9 · 850 users · 15 min</div>
-              <div class="tag-row"><span class="tag tag-teal">Healthcare</span></div>
+            <div>
+                <h1 class="text-base font-extrabold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-400">
+                    WauVR <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-[#e3a857]/10 text-[#e3a857] border border-[#e3a857]/20 ml-2">ALPHA V2.6</span>
+                </h1>
+                <p class="text-[10px] text-gray-500 font-medium tracking-wider uppercase">Interactive Academic Evaluation Studio</p>
             </div>
-            <i class="ti ti-bookmark"></i>
-          </div>
-          <div class="exp-item">
-            <div class="exp-thumb bg-coral"><i class="ti ti-building-arch"></i></div>
-            <div class="exp-info">
-              <div class="exp-title">George Town Heritage Walk</div>
-              <div class="exp-meta">⭐ 4.7 · 3,100 explorers · 25 min</div>
-              <div class="tag-row"><span class="tag tag-coral">UNESCO</span><span class="tag tag-green">Multilingual</span></div>
+        </div>
+        
+        <div class="hidden md:flex items-center gap-6">
+            <div class="flex items-center gap-2 px-3 py-1 bg-gray-900/60 rounded-lg border border-gray-800 text-[11px] code-font text-[#06defa]">
+                <span class="inline-block w-2 h-2 rounded-full bg-[#06defa] animate-ping"></span>
+                <span>SYSTEM: COMPILING ENGINE</span>
             </div>
-            <i class="ti ti-bookmark"></i>
-          </div>
-          <div class="exp-item">
-            <div class="exp-thumb bg-amber"><i class="ti ti-alert-triangle"></i></div>
-            <div class="exp-info">
-              <div class="exp-title">H2S Gas Leak Emergency</div>
-              <div class="exp-meta">⭐ 4.6 · 620 trainees · 30 min</div>
-              <div class="tag-row"><span class="tag tag-amber">Industrial</span><span class="tag tag-red">Advanced</span></div>
+            <div class="flex items-center gap-2">
+                <span class="text-xs text-gray-400">Presenter:</span>
+                <span class="text-xs font-bold text-gray-200">Azmi Bin Razak</span>
             </div>
-            <i class="ti ti-bookmark"></i>
-          </div>
-          <div class="exp-item">
-            <div class="exp-thumb bg-blue"><i class="ti ti-building"></i></div>
-            <div class="exp-info">
-              <div class="exp-title">PropVR — KLCC Penthouse</div>
-              <div class="exp-meta">⭐ 4.8 · 520 buyers · 20 min</div>
-              <div class="tag-row"><span class="tag tag-blue">Real Estate</span></div>
+        </div>
+    </header>
+
+    <!-- Main Workspace Frame -->
+    <div class="flex-grow flex flex-col xl:flex-row overflow-hidden relative">
+        <div class="absolute inset-0 batik-overlay pointer-events-none z-0"></div>
+
+        <!-- LEFT PANEL: Dynamic Academic Assessment Dashboard (7-column space) -->
+        <main class="flex-grow xl:w-7/12 flex flex-col border-r border-gray-900 bg-[#060814]/90 z-10 overflow-hidden">
+            <!-- Tabs Menu -->
+            <div class="flex-shrink-0 border-b border-gray-950 flex bg-[#03050c]">
+                <button onclick="switchReportTab('analysis')" id="tabBtn-analysis" class="flex-1 py-4 px-4 text-xs font-bold uppercase tracking-wider border-b-2 border-[#06defa] text-[#06defa] transition-all flex items-center justify-center gap-2">
+                    <span class="material-icons-outlined text-sm">analytics</span>
+                    <span>1.0 Global & Local Landscape</span>
+                </button>
+                <button onclick="switchReportTab('features')" id="tabBtn-features" class="flex-1 py-4 px-4 text-xs font-bold uppercase tracking-wider border-b-2 border-transparent text-gray-400 hover:text-gray-200 transition-all flex items-center justify-center gap-2">
+                    <span class="material-icons-outlined text-sm">auto_awesome</span>
+                    <span>2.0 Core VR Solutions</span>
+                </button>
+                <button onclick="switchReportTab('methodology')" id="tabBtn-methodology" class="flex-1 py-4 px-4 text-xs font-bold uppercase tracking-wider border-b-2 border-transparent text-gray-400 hover:text-gray-200 transition-all flex items-center justify-center gap-2">
+                    <span class="material-icons-outlined text-sm">architecture</span>
+                    <span>3.0 Methodology</span>
+                </button>
             </div>
-            <i class="ti ti-bookmark"></i>
-          </div>
-        </div>
-        <div class="phone-nav">
-          <div class="nav-item"><i class="ti ti-home"></i><span>Home</span></div>
-          <div class="nav-item nav-active"><i class="ti ti-compass"></i><span>Explore</span></div>
-          <div class="nav-item"><i class="ti ti-chart-bar"></i><span>Progress</span></div>
-          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
-        </div>
-      </div>
-      <div class="screen-caption">Explore catalogue — search & filter across all sectors</div>
-    </div>
 
-  </div>
-</section>
+            <!-- Content Area of the Academic Dashboard -->
+            <div class="flex-grow overflow-y-auto p-6 space-y-6">
 
-<!-- ══════════════════════════════════════════
-     SECTOR: STUDENT / TVET
-══════════════════════════════════════════ -->
-<section class="sector" id="sector-student">
-  <div class="sector-header">
-    <h1>VRLearn — Student / TVET</h1>
-    <p>Immersive virtual labs for TVET and university students — from module selection to post-session assessment.</p>
-  </div>
-  <div class="screens-row screens-row--3">
+                <!-- SECTION 1.0: Landscape Analysis Tab -->
+                <div id="section-analysis" class="space-y-6">
+                    <div class="p-5 glass-panel rounded-2xl border border-gray-800/80">
+                        <div class="flex items-center gap-3 mb-3">
+                            <span class="material-icons-outlined text-[#06defa]">insights</span>
+                            <h2 class="text-lg font-bold text-gray-100">Malaysia & Global VR Solutions Review</h2>
+                        </div>
+                        <p class="text-sm text-gray-300 leading-relaxed mb-4">
+                            Globally, technologies like **HTC Viverse** and **Second Life** highlight two major design paradigms in user engagement. Viverse prioritizes browser-accessible **WebXR frameworks**, making virtual worlds lightweight and friction-free across desktop and mobile devices. Second Life relies heavily on heavy local clients with vast persistent asset databases, producing highly loyal but highly-restricted localized desktop user patterns.
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                            <div class="p-4 bg-gray-900/60 rounded-xl border border-gray-800">
+                                <h3 class="text-xs font-bold uppercase tracking-wider text-[#06defa] mb-2">Global Architectural Limits</h3>
+                                <p class="text-xs text-gray-400 leading-relaxed">
+                                    High-fidelity spatial engines typically load multi-gigabyte models directly into memory. In developing regions, this creates a major barrier, preventing users without high-end hardware or direct fiber connections from participating.
+                                </p>
+                            </div>
+                            <div class="p-4 bg-gray-900/60 rounded-xl border border-gray-800">
+                                <h3 class="text-xs font-bold uppercase tracking-wider text-[#e3a857] mb-2">Malaysian Ecosystem Gaps</h3>
+                                <p class="text-xs text-gray-400 leading-relaxed">
+                                    Local industrial efforts focus heavily on enterprise simulations or basic 360-degree real-estate tours. There is a lack of lightweight consumer platforms merging cultural identity, remote collaboration, and social commerce.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
 
-    <!-- STU A: Lab Catalogue -->
-    <div class="phone-wrap">
-      <div class="phone">
-        <div class="phone-bar ph-purple">
-          <div class="bar-eyebrow">VRLearn · TVET</div>
-          <div class="bar-name">Virtual Lab Catalogue</div>
-          <div class="inline-filters">
-            <span class="ifc active">All</span><span class="ifc">Electrical</span><span class="ifc">Mechanical</span><span class="ifc">Civil</span><span class="ifc">Chemistry</span>
-          </div>
-        </div>
-        <div class="search-bar"><i class="ti ti-search"></i><span>Search labs...</span></div>
-        <div class="section-label">Continue where you left off</div>
-        <div class="vr-card">
-          <div class="vr-thumb bg-purple"><i class="ti ti-cpu"></i><span class="live-badge">In progress</span></div>
-          <div class="vr-info">
-            <div class="vr-title">Circuit Wiring — Intermediate</div>
-            <div class="vr-sub">Module 3 of 5 · Electrical Engineering</div>
-            <div class="prog-bar"><div class="prog-fill pf-purple" style="width:64%"></div></div>
-            <div class="prog-meta"><span>64% complete</span><span class="col-purple fw-500">Resume →</span></div>
-          </div>
-        </div>
-        <div class="section-label">Recommended next</div>
-        <div class="env-grid">
-          <div class="env-card">
-            <div class="env-top bg-green"><i class="ti ti-flask"></i></div>
-            <div class="env-label">Chemistry Lab</div>
-            <div class="env-sub">Acid-base titration</div>
-          </div>
-          <div class="env-card">
-            <div class="env-top bg-blue"><i class="ti ti-engine"></i></div>
-            <div class="env-label">Engine Disassembly</div>
-            <div class="env-sub">Mechanical · Adv.</div>
-          </div>
-          <div class="env-card">
-            <div class="env-top bg-pink"><i class="ti ti-building-bridge"></i></div>
-            <div class="env-label">Bridge Load Test</div>
-            <div class="env-sub">Civil Engineering</div>
-          </div>
-          <div class="env-card">
-            <div class="env-top bg-amber"><i class="ti ti-tool"></i></div>
-            <div class="env-label">Welding Sim</div>
-            <div class="env-sub">Manufacturing</div>
-          </div>
-        </div>
-        <div class="section-label">Browse all modules</div>
-        <div class="list-item">
-          <div class="list-icon li-purple"><i class="ti ti-bolt"></i></div>
-          <div class="list-text"><div class="list-title">Electrical Installations — Basic</div><div class="list-sub">5 modules · 120 min total</div></div>
-          <i class="ti ti-chevron-right muted"></i>
-        </div>
-        <div class="list-item">
-          <div class="list-icon li-blue"><i class="ti ti-engine"></i></div>
-          <div class="list-text"><div class="list-title">Automotive Engineering</div><div class="list-sub">4 modules · 90 min total</div></div>
-          <i class="ti ti-chevron-right muted"></i>
-        </div>
-        <div class="list-item">
-          <div class="list-icon li-green"><i class="ti ti-flask"></i></div>
-          <div class="list-text"><div class="list-title">Chemistry Laboratory</div><div class="list-sub">6 modules · 150 min total</div></div>
-          <i class="ti ti-chevron-right muted"></i>
-        </div>
-        <div class="phone-nav">
-          <div class="nav-item nav-active nav-purple"><i class="ti ti-layout-grid"></i><span>Labs</span></div>
-          <div class="nav-item"><i class="ti ti-player-play"></i><span>Sessions</span></div>
-          <div class="nav-item"><i class="ti ti-chart-bar"></i><span>Progress</span></div>
-          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
-        </div>
-      </div>
-      <div class="screen-caption">Screen A — VR lab catalogue & module selection</div>
-    </div>
+                    <!-- Market Comparison Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="p-4 glass-card rounded-xl border border-gray-800/60">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-xs font-extrabold text-[#06defa] tracking-wide uppercase">Browser WebXR</span>
+                                <span class="material-icons-outlined text-sm text-[#06defa]">bolt</span>
+                            </div>
+                            <div class="text-2xl font-black text-white">95%</div>
+                            <p class="text-[11px] text-gray-400 mt-1">Immediate reach on standard smartphones with no physical app store barriers.</p>
+                        </div>
+                        <div class="p-4 glass-card rounded-xl border border-gray-800/60">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-xs font-extrabold text-[#e3a857] tracking-wide uppercase">Batik Fashion</span>
+                                <span class="material-icons-outlined text-sm text-[#e3a857]">palette</span>
+                            </div>
+                            <div class="text-2xl font-black text-white">100%</div>
+                            <p class="text-[11px] text-gray-400 mt-1">Culturally-tailored customizable skins preserving local identity.</p>
+                        </div>
+                        <div class="p-4 glass-card rounded-xl border border-gray-800/60">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-xs font-extrabold text-green-400 tracking-wide uppercase">Local P2P</span>
+                                <span class="material-icons-outlined text-sm text-green-400">sync_alt</span>
+                            </div>
+                            <div class="text-2xl font-black text-white">5x</div>
+                            <p class="text-[11px] text-gray-400 mt-1">Faster state updates by using localized WebRTC data channels.</p>
+                        </div>
+                    </div>
 
-    <!-- STU B: Live Lab Session -->
-    <div class="phone-wrap">
-      <div class="phone">
-        <div class="phone-bar ph-dark">
-          <div class="bar-live-row">
-            <div class="live-dot-wrap"><div class="live-dot"></div><span>Live · 12:47</span></div>
-            <i class="ti ti-headset bar-icon-light"></i>
-          </div>
-        </div>
-        <div class="vr-viewport vp-purple">
-          <i class="ti ti-cpu vp-icon"></i>
-          <div class="vp-label">VR workspace rendering</div>
-          <div class="vp-tags">
-            <span class="vp-tag vp-tag-purple">Hand tracking</span>
-            <span class="vp-tag vp-tag-dim">360° view</span>
-          </div>
-        </div>
-        <div class="section-label">Current objective</div>
-        <div class="obj-box obj-purple">
-          <div class="obj-step col-purple">Step 4 / 7 — Connect neutral wire</div>
-          <div class="obj-desc">Locate the blue neutral wire and connect to terminal N on the distribution board using the virtual pliers.</div>
-        </div>
-        <div class="metric-row">
-          <div class="metric-box"><div class="metric-val col-purple">91%</div><div class="metric-lbl">Accuracy</div></div>
-          <div class="metric-box"><div class="metric-val col-teal">1</div><div class="metric-lbl">Errors</div></div>
-          <div class="metric-box"><div class="metric-val col-purple">2</div><div class="metric-lbl">Hints left</div></div>
-          <div class="metric-box"><div class="metric-val col-purple">3</div><div class="metric-lbl">Steps left</div></div>
-        </div>
-        <div class="hint-box hint-purple">
-          <i class="ti ti-bulb hint-icon col-purple"></i>
-          <div class="hint-text">The neutral wire is always blue in Malaysian wiring standards (MS IEC 60446). Look for the blue sheath near the main breaker.</div>
-        </div>
-        <div class="section-label">Step progress</div>
-        <div class="step-prog">
-          <div class="sp-step sp-done"></div><div class="sp-step sp-done"></div><div class="sp-step sp-done"></div>
-          <div class="sp-step sp-active sp-purple"></div>
-          <div class="sp-step sp-todo"></div><div class="sp-step sp-todo"></div><div class="sp-step sp-todo"></div>
-        </div>
-        <div class="action-row">
-          <button class="act-btn"><i class="ti ti-pause"></i> Pause</button>
-          <button class="act-btn"><i class="ti ti-rotate"></i> Redo</button>
-          <button class="act-btn act-danger"><i class="ti ti-x"></i> Exit</button>
-        </div>
-        <div class="phone-nav">
-          <div class="nav-item"><i class="ti ti-layout-grid"></i><span>Labs</span></div>
-          <div class="nav-item nav-active nav-purple"><i class="ti ti-player-play"></i><span>Sessions</span></div>
-          <div class="nav-item"><i class="ti ti-chart-bar"></i><span>Progress</span></div>
-          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
-        </div>
-      </div>
-      <div class="screen-caption">Screen B — Live VR lab: step-by-step guidance & real-time feedback</div>
-    </div>
+                    <!-- System Dynamic Logs -->
+                    <div class="p-5 bg-black/80 rounded-2xl border border-gray-900 code-font relative">
+                        <div class="absolute top-3 right-4 flex items-center gap-1.5 text-[10px] text-gray-500">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500 inline-block animate-pulse"></span>
+                            <span>LIVE ENGINE MONITOR</span>
+                        </div>
+                        <h4 class="text-xs font-extrabold text-gray-400 uppercase tracking-widest mb-3">System Log Stack</h4>
+                        <div id="terminal-logs" class="space-y-1.5 text-[11px] text-gray-400 max-h-36 overflow-y-auto">
+                            <div class="text-gray-500">[16:21:02] Engine initializing...</div>
+                            <div class="text-gray-500">[16:21:04] Fetching localized Web3 clothing asset keys...</div>
+                            <div class="text-cyan-400">[16:21:05] WebXR context bounded successfully. Ready for user authentication.</div>
+                        </div>
+                    </div>
+                </div>
 
-    <!-- STU C: Post-Session Results -->
-    <div class="phone-wrap">
-      <div class="phone">
-        <div class="phone-bar ph-purple">
-          <div class="bar-eyebrow">Session complete</div>
-          <div class="bar-name">Circuit Wiring — Module 3</div>
-        </div>
-        <div class="result-hero">
-          <div class="result-ring result-ring-purple">A</div>
-          <div class="result-title">Great performance, Ahmad!</div>
-          <div class="result-sub">Top 15% of learners this week</div>
-        </div>
-        <div class="metric-row">
-          <div class="metric-box"><div class="metric-val col-purple">91%</div><div class="metric-lbl">Accuracy</div></div>
-          <div class="metric-box"><div class="metric-val col-teal">12:47</div><div class="metric-lbl">Time taken</div></div>
-          <div class="metric-box"><div class="metric-val col-amber">1</div><div class="metric-lbl">Errors</div></div>
-        </div>
-        <div class="section-label">Skill breakdown</div>
-        <div class="skill-list">
-          <div class="skill-row">
-            <div class="skill-name">Wire identification</div>
-            <div class="skill-score col-purple">100%</div>
-          </div>
-          <div class="prog-bar"><div class="prog-fill pf-purple" style="width:100%"></div></div>
-          <div class="skill-row">
-            <div class="skill-name">Terminal connection</div>
-            <div class="skill-score col-purple">88%</div>
-          </div>
-          <div class="prog-bar"><div class="prog-fill pf-purple" style="width:88%"></div></div>
-          <div class="skill-row">
-            <div class="skill-name">Safety protocol</div>
-            <div class="skill-score col-teal">95%</div>
-          </div>
-          <div class="prog-bar"><div class="prog-fill pf-teal" style="width:95%"></div></div>
-          <div class="skill-row">
-            <div class="skill-name">Speed efficiency</div>
-            <div class="skill-score col-amber">72%</div>
-          </div>
-          <div class="prog-bar"><div class="prog-fill pf-amber" style="width:72%"></div></div>
-        </div>
-        <div class="unlock-box unlock-purple">
-          <i class="ti ti-lock-open"></i>
-          <div>
-            <div class="unlock-title">Module 4 unlocked</div>
-            <div class="unlock-sub">Advanced panel installation — tap to begin</div>
-          </div>
-        </div>
-        <div class="dual-action">
-          <button class="act-btn"><i class="ti ti-refresh"></i> Redo</button>
-          <button class="act-btn-primary btn-purple">Continue to Module 4 →</button>
-        </div>
-        <div class="phone-nav">
-          <div class="nav-item"><i class="ti ti-layout-grid"></i><span>Labs</span></div>
-          <div class="nav-item"><i class="ti ti-player-play"></i><span>Sessions</span></div>
-          <div class="nav-item nav-active nav-purple"><i class="ti ti-chart-bar"></i><span>Progress</span></div>
-          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
-        </div>
-      </div>
-      <div class="screen-caption">Screen C — Post-session results & skill breakdown</div>
-    </div>
+                <!-- SECTION 2.0: Core Solutions & Justifications -->
+                <div id="section-features" class="hidden space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-base font-extrabold uppercase text-gray-200 tracking-wider">Five (5) Core Solutions Under Review</h3>
+                        <span class="text-xs font-bold text-[#e3a857] px-2 py-0.5 rounded-full bg-[#e3a857]/10">Interactive Sync Enabled</span>
+                    </div>
 
-    <!-- STU D: Progress & Certifications -->
-    <div class="phone-wrap">
-      <div class="phone">
-        <div class="phone-bar ph-purple">
-          <div class="bar-name">My Progress</div>
-          <div class="bar-eyebrow">June 2026</div>
-        </div>
-        <div class="stat-row">
-          <div class="stat-box"><div class="stat-val col-purple">12</div><div class="stat-lbl">Sessions</div></div>
-          <div class="stat-box"><div class="stat-val col-purple">84%</div><div class="stat-lbl">Avg Score</div></div>
-          <div class="stat-box"><div class="stat-val col-teal">3</div><div class="stat-lbl">Badges</div></div>
-        </div>
-        <div class="section-label">Weekly activity</div>
-        <div class="bar-chart">
-          <div class="bc-col"><div class="bc-bar" style="height:40%"></div><span>M</span></div>
-          <div class="bc-col"><div class="bc-bar" style="height:70%"></div><span>T</span></div>
-          <div class="bc-col"><div class="bc-bar" style="height:30%"></div><span>W</span></div>
-          <div class="bc-col"><div class="bc-bar bc-bar-active" style="height:85%"></div><span class="col-purple">T</span></div>
-          <div class="bc-col"><div class="bc-bar" style="height:55%"></div><span>F</span></div>
-          <div class="bc-col"><div class="bc-bar" style="height:20%"></div><span>S</span></div>
-          <div class="bc-col"><div class="bc-bar" style="height:10%"></div><span>S</span></div>
-        </div>
-        <div class="section-label">Certifications earned</div>
-        <div class="list-item">
-          <div class="list-icon li-purple"><i class="ti ti-certificate"></i></div>
-          <div class="list-text"><div class="list-title">Circuit Wiring — Basic</div><div class="list-sub">Issued 15 Jun 2026 · Score: 91%</div></div>
-          <i class="ti ti-download muted"></i>
-        </div>
-        <div class="list-item">
-          <div class="list-icon li-teal"><i class="ti ti-certificate"></i></div>
-          <div class="list-text"><div class="list-title">Chemistry Lab Safety</div><div class="list-sub">Issued 10 Jun 2026 · Score: 88%</div></div>
-          <i class="ti ti-download muted"></i>
-        </div>
-        <div class="list-item">
-          <div class="list-icon li-amber"><i class="ti ti-certificate"></i></div>
-          <div class="list-text"><div class="list-title">Welding Basics — Level 1</div><div class="list-sub">Issued 2 Jun 2026 · Score: 85%</div></div>
-          <i class="ti ti-download muted"></i>
-        </div>
-        <div class="phone-nav">
-          <div class="nav-item"><i class="ti ti-layout-grid"></i><span>Labs</span></div>
-          <div class="nav-item"><i class="ti ti-player-play"></i><span>Sessions</span></div>
-          <div class="nav-item nav-active nav-purple"><i class="ti ti-chart-bar"></i><span>Progress</span></div>
-          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
-        </div>
-      </div>
-      <div class="screen-caption">Screen D — Progress analytics & downloadable certificates</div>
-    </div>
+                    <!-- Feature 1: Streaming Engine -->
+                    <div class="p-5 glass-panel rounded-xl border-l-4 border-l-[#06defa] space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="p-1.5 rounded-lg bg-[#06defa]/10 text-[#06defa] text-xs font-bold">F1</span>
+                                <h4 class="text-sm font-bold text-white">Bandwidth-Adaptive WebXR Engine</h4>
+                            </div>
+                            <div class="text-xs font-semibold text-gray-400 code-font">Adaptive Streaming Logs</div>
+                        </div>
+                        <p class="text-xs text-gray-300 leading-relaxed">
+                            Compresses polygonal count and texture resolution on-the-fly dynamically. When mobile network transitions between 4G and 5G, the interface updates to reflect asset delivery changes and avoid packet loss.
+                        </p>
+                        <div class="p-3 bg-gray-950/80 rounded-lg text-[11px] text-gray-400 flex items-center justify-between">
+                            <span>Test Simulation: Toggle network settings in the simulator on the right to watch data updates in real-time.</span>
+                            <span class="material-icons-outlined text-sm text-[#06defa]">network_check</span>
+                        </div>
+                    </div>
 
-  </div>
-</section>
+                    <!-- Feature 2: Time-Travel Portal -->
+                    <div class="p-5 glass-panel rounded-xl border-l-4 border-l-[#e3a857] space-y-3">
+                        <div class="flex items-center gap-2">
+                            <span class="p-1.5 rounded-lg bg-[#e3a857]/10 text-[#e3a857] text-xs font-bold">F2</span>
+                            <h4 class="text-sm font-bold text-white">Cultural Heritage "Time-Travel" Portal</h4>
+                        </div>
+                        <p class="text-xs text-gray-300 leading-relaxed">
+                            A geofenced portal mapping Melaka's historical points of interest. Uses visual timelines to transform real ruins into 3D reconstructions. Built-in camera alert screens prevent physical hazards when moving while immersed.
+                        </p>
+                        <div class="grid grid-cols-2 gap-3 text-[10px] code-font">
+                            <div class="p-2 bg-gray-950/60 rounded border border-gray-800">
+                                <span class="text-gray-500">Active Location:</span>
+                                <span class="text-gray-300 block">A Famosa Fort, Melaka</span>
+                            </div>
+                            <div class="p-2 bg-gray-950/60 rounded border border-gray-800">
+                                <span class="text-gray-500">Safety System:</span>
+                                <span class="text-emerald-400 block">Camera Feed Guard On</span>
+                            </div>
+                        </div>
+                    </div>
 
-<!-- ══════════════════════════════════════════
-     SECTOR: HEALTHCARE
-══════════════════════════════════════════ -->
-<section class="sector" id="sector-health">
-  <div class="sector-header">
-    <h1>VRHeal — Healthcare</h1>
-    <p>VR-based therapy and rehabilitation — covering both the patient experience and the clinician dashboard.</p>
-  </div>
-  <div class="screens-row screens-row--3">
+                    <!-- Feature 3: Batik Avatars -->
+                    <div class="p-5 glass-panel rounded-xl border-l-4 border-l-[#9c27b0] space-y-3">
+                        <div class="flex items-center gap-2">
+                            <span class="p-1.5 rounded-lg bg-[#9c27b0]/10 text-[#9c27b0] text-xs font-bold">F3</span>
+                            <h4 class="text-sm font-bold text-white">Cross-Platform "Batik-Avatars" Studio</h4>
+                        </div>
+                        <p class="text-xs text-gray-300 leading-relaxed">
+                            Bakes detailed cultural clothing patterns (Batik, Songket, Kebaya) into low-poly textures, allowing high-fidelity rendering on low-tier smartphones without degrading system processing performance.
+                        </p>
+                    </div>
 
-    <!-- HEALTH A: Therapy Programme Selector -->
-    <div class="phone-wrap">
-      <div class="phone">
-        <div class="phone-bar ph-teal">
-          <div class="bar-eyebrow">VRHeal · Therapy</div>
-          <div class="bar-name">Choose your programme</div>
-          <div class="inline-filters">
-            <span class="ifc ifc-teal active">All</span><span class="ifc ifc-teal">Anxiety</span><span class="ifc ifc-teal">Phobia</span><span class="ifc ifc-teal">Rehab</span>
-          </div>
-        </div>
-        <div class="prescribed-notice">
-          <i class="ti ti-stethoscope"></i>
-          <span>Prescribed by Dr. Amirah Yusof · Updated 20 Jun</span>
-        </div>
-        <div class="section-label">Your prescribed sessions</div>
-        <div class="vr-card">
-          <div class="vr-thumb bg-teal"><i class="ti ti-wind"></i><span class="live-badge lb-teal">Active</span></div>
-          <div class="vr-info">
-            <div class="vr-title">Calm Forest — Anxiety Relief</div>
-            <div class="vr-sub">Guided breathing · 15 min · Session 3 of 8</div>
-            <div class="prog-bar"><div class="prog-fill pf-teal" style="width:37%"></div></div>
-            <div class="prog-meta"><span>Session 3 of 8</span><span class="col-teal fw-500">Begin →</span></div>
-          </div>
-        </div>
-        <div class="vr-card">
-          <div class="vr-thumb bg-green"><i class="ti ti-human"></i></div>
-          <div class="vr-info">
-            <div class="vr-title">Stroke Rehab — Upper Limb</div>
-            <div class="vr-sub">Motor exercises · 20 min · Daily</div>
-            <div class="prog-bar"><div class="prog-fill pf-teal" style="width:70%"></div></div>
-          </div>
-        </div>
-        <div class="vr-card">
-          <div class="vr-thumb bg-blue"><i class="ti ti-drone"></i></div>
-          <div class="vr-info">
-            <div class="vr-title">Heights Exposure — Acrophobia</div>
-            <div class="vr-sub">Graded exposure · 12 min · Level 2 of 5</div>
-            <div class="prog-bar"><div class="prog-fill pf-blue" style="width:20%"></div></div>
-          </div>
-        </div>
-        <div class="section-label">Self-guided sessions</div>
-        <div class="list-item">
-          <div class="list-icon li-teal"><i class="ti ti-heart-rate-monitor"></i></div>
-          <div class="list-text"><div class="list-title">Mindfulness Breathing</div><div class="list-sub">10 min · Anytime</div></div>
-          <i class="ti ti-chevron-right muted"></i>
-        </div>
-        <div class="list-item">
-          <div class="list-icon li-blue"><i class="ti ti-zzz"></i></div>
-          <div class="list-text"><div class="list-title">Sleep Preparation VR</div><div class="list-sub">8 min · Before bed</div></div>
-          <i class="ti ti-chevron-right muted"></i>
-        </div>
-        <div class="phone-nav">
-          <div class="nav-item nav-active nav-teal"><i class="ti ti-layout-grid"></i><span>Programmes</span></div>
-          <div class="nav-item"><i class="ti ti-player-play"></i><span>Sessions</span></div>
-          <div class="nav-item"><i class="ti ti-chart-line"></i><span>Mood log</span></div>
-          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
-        </div>
-      </div>
-      <div class="screen-caption">Screen A — Clinician-prescribed therapy programme</div>
-    </div>
+                    <!-- Feature 4: Pasar Malam Commerce -->
+                    <div class="p-5 glass-panel rounded-xl border-l-4 border-l-emerald-500 space-y-3">
+                        <div class="flex items-center gap-2">
+                            <span class="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-500 text-xs font-bold">F4</span>
+                            <h4 class="text-sm font-bold text-white">Immersive "Pasar Malam" Social Commerce</h4>
+                        </div>
+                        <p class="text-xs text-gray-300 leading-relaxed">
+                            Transforms flat 2D catalogs into social storefront layouts. Users can inspect 3D photogrammetry models, hear spatial merchant voices, and interact directly with shop assistants in real-time.
+                        </p>
+                    </div>
 
-    <!-- HEALTH B: Active VR Therapy -->
-    <div class="phone-wrap">
-      <div class="phone">
-        <div class="phone-bar ph-dark">
-          <div class="bar-live-row">
-            <div class="live-dot-wrap live-teal"><div class="live-dot"></div><span>Session active · 06:14</span></div>
-            <span class="biometric">♥ 72 bpm</span>
-          </div>
-        </div>
-        <div class="vr-viewport vp-teal">
-          <i class="ti ti-trees vp-icon"></i>
-          <div class="vp-label">Forest environment · Calm preset</div>
-          <div class="vp-tags">
-            <span class="vp-tag vp-tag-teal">Spatial audio on</span>
-            <span class="vp-tag vp-tag-dim">Haptic vest</span>
-          </div>
-        </div>
-        <div class="section-label">Guided instruction</div>
-        <div class="obj-box obj-teal">
-          <div class="obj-step col-teal">Breathing exercise — exhale phase</div>
-          <div class="obj-desc">Slowly breathe out for 6 counts. Watch the leaves fall gently in sync with your breath.</div>
-        </div>
-        <div class="metric-row">
-          <div class="metric-box"><div class="metric-val col-teal">72</div><div class="metric-lbl">Heart rate</div></div>
-          <div class="metric-box"><div class="metric-val col-teal">Low</div><div class="metric-lbl">Stress level</div></div>
-          <div class="metric-box"><div class="metric-val col-purple">3/8</div><div class="metric-lbl">Sessions</div></div>
-        </div>
-        <div class="hint-box hint-teal">
-          <i class="ti ti-info-circle hint-icon col-teal"></i>
-          <div class="hint-text">Your biometric data shows reduced stress compared to your last session. You are making measurable progress.</div>
-        </div>
-        <div class="section-label">Calm intensity</div>
-        <div class="intensity-bar">
-          <div class="ib-fill" style="width:60%;background:#0F6E56"></div>
-        </div>
-        <div class="intensity-labels"><span>Mild</span><span>Moderate</span><span>Deep calm</span></div>
-        <div class="action-row">
-          <button class="act-btn"><i class="ti ti-volume"></i> Audio</button>
-          <button class="act-btn"><i class="ti ti-pause"></i> Pause</button>
-          <button class="act-btn act-danger"><i class="ti ti-emergency-bed"></i> SOS</button>
-        </div>
-        <div class="phone-nav">
-          <div class="nav-item"><i class="ti ti-layout-grid"></i><span>Programmes</span></div>
-          <div class="nav-item nav-active nav-teal"><i class="ti ti-player-play"></i><span>Sessions</span></div>
-          <div class="nav-item"><i class="ti ti-chart-line"></i><span>Mood log</span></div>
-          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
-        </div>
-      </div>
-      <div class="screen-caption">Screen B — Live VR therapy: biometrics & guided breathing</div>
-    </div>
+                    <!-- Feature 5: Decentralized P2P Classroom -->
+                    <div class="p-5 glass-panel rounded-xl border-l-4 border-l-blue-500 space-y-3">
+                        <div class="flex items-center gap-2">
+                            <span class="p-1.5 rounded-lg bg-blue-500/10 text-blue-500 text-xs font-bold">F5</span>
+                            <h4 class="text-sm font-bold text-white">P2P Collaborative Classroom Sync</h4>
+                        </div>
+                        <p class="text-xs text-gray-300 leading-relaxed">
+                            Bypasses central server lag by syncing pupil action matrices over localized peer connections. Displays visual guide vectors indicating classmate interactions in the virtual workspace.
+                        </p>
+                    </div>
+                </div>
 
-    <!-- HEALTH C: Clinician Dashboard -->
-    <div class="phone-wrap">
-      <div class="phone">
-        <div class="phone-bar ph-teal">
-          <div class="bar-eyebrow">Dr. Amirah's view</div>
-          <div class="bar-name">Patient progress</div>
-        </div>
-        <div class="patient-row">
-          <div class="avatar av-teal">SL</div>
-          <div class="patient-info">
-            <div class="patient-name">Siti Liyana, 34</div>
-            <div class="patient-sub">GAD programme · 3 sessions completed</div>
-          </div>
-          <i class="ti ti-dots-vertical muted"></i>
-        </div>
-        <div class="metric-row">
-          <div class="metric-box"><div class="metric-val col-teal">↓18%</div><div class="metric-lbl">Anxiety score</div></div>
-          <div class="metric-box"><div class="metric-val col-purple">72 bpm</div><div class="metric-lbl">Avg heart rate</div></div>
-          <div class="metric-box"><div class="metric-val col-teal">Good</div><div class="metric-lbl">Engagement</div></div>
-        </div>
-        <div class="section-label">Session trend — GAD-7 anxiety score</div>
-        <div class="trend-chart">
-          <div class="tc-col"><div class="tc-bar" style="height:85%;background:#5DCAA5"></div><span>S1</span></div>
-          <div class="tc-col"><div class="tc-bar" style="height:72%;background:#1D9E75"></div><span>S2</span></div>
-          <div class="tc-col"><div class="tc-bar" style="height:58%;background:#0F6E56"></div><span class="col-teal">S3</span></div>
-          <div class="tc-col"><div class="tc-bar tc-forecast" style="height:42%"></div><span>S4</span></div>
-          <div class="tc-col"><div class="tc-bar tc-forecast" style="height:30%"></div><span>S5</span></div>
-        </div>
-        <div class="trend-note">Anxiety decreasing — patient on track</div>
-        <div class="section-label">Adjust next session</div>
-        <div class="adjust-row">
-          <div class="adjust-box adjust-active">
-            <div class="adjust-label col-teal">Intensity</div>
-            <div class="adjust-val">Level 3</div>
-            <div class="dot-scale">
-              <div class="ds-dot ds-on"></div><div class="ds-dot ds-on"></div><div class="ds-dot ds-on"></div>
-              <div class="ds-dot"></div><div class="ds-dot"></div>
+                <!-- SECTION 3.0: UI/UX Methodology Tab -->
+                <div id="section-methodology" class="hidden space-y-6">
+                    <div class="p-5 glass-panel rounded-2xl border border-gray-800">
+                        <div class="flex items-center gap-3 mb-3">
+                            <span class="material-icons-outlined text-[#e3a857]">architecture</span>
+                            <h2 class="text-lg font-bold text-gray-100">Stanford University Design Thinking</h2>
+                        </div>
+                        <p class="text-sm text-gray-300 leading-relaxed mb-4">
+                            Unlike traditional application designs built for two-dimensional screens, **spatial user environments** must be modeled using design iterations centered deeply on bodily presence, field-of-view limits, and visual comfort. We apply the **Stanford Design Thinking Framework** to systematically map human physical capabilities to WebXR requirements.
+                        </p>
+
+                        <!-- Timeline steps -->
+                        <div class="space-y-4">
+                            <div class="flex gap-4">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-7 h-7 rounded-full bg-[#06defa]/20 border border-[#06defa] flex items-center justify-center text-xs font-bold text-[#06defa]">1</div>
+                                    <div class="w-0.5 h-full bg-gray-800"></div>
+                                </div>
+                                <div class="pb-4">
+                                    <h4 class="text-xs font-bold text-white uppercase tracking-wider">Step 1: Empathize (Addressing Hardware Constraints)</h4>
+                                    <p class="text-xs text-gray-400 mt-1">
+                                        We evaluated local device limitations, focusing specifically on unstable cellular network quality and high thermal loads generated on standard mid-tier smartphones.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-4">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-7 h-7 rounded-full bg-[#e3a857]/20 border border-[#e3a857] flex items-center justify-center text-xs font-bold text-[#e3a857]">2</div>
+                                    <div class="w-0.5 h-full bg-gray-800"></div>
+                                </div>
+                                <div class="pb-4">
+                                    <h4 class="text-xs font-bold text-white uppercase tracking-wider">Step 2: Define (Targeting Latency & Accessibility)</h4>
+                                    <p class="text-xs text-gray-400 mt-1">
+                                        Rather than viewing the challenge as a purely visual aesthetic goal, the design requirements were targeted to solve data latency, asset processing complexity, and virtual motion sickness.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-4">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500 flex items-center justify-center text-xs font-bold text-emerald-500">3</div>
+                                    <div class="w-0.5 h-full bg-gray-800"></div>
+                                </div>
+                                <div class="pb-4">
+                                    <h4 class="text-xs font-bold text-white uppercase tracking-wider">Step 3: Ideate (Designing Spatial UI Anchors)</h4>
+                                    <p class="text-xs text-gray-400 mt-1">
+                                        The team conceived localized UI structures, replacing standard flat menus with responsive interaction anchors, such as the golden 'Wau' kite floating action button.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-4">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-7 h-7 rounded-full bg-blue-500/20 border border-blue-500 flex items-center justify-center text-xs font-bold text-blue-500">4</div>
+                                    <div class="w-0.5 h-full bg-gray-800"></div>
+                                </div>
+                                <div class="pb-4">
+                                    <h4 class="text-xs font-bold text-white uppercase tracking-wider">Step 4: Prototype (Generating Multi-Screen Views)</h4>
+                                    <p class="text-xs text-gray-400 mt-1">
+                                        We compiled all physical layout interactions, asset customizers, timeline mechanics, and social chat interfaces into the modular simulator layout on the right.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-4">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-7 h-7 rounded-full bg-purple-500/20 border border-purple-500 flex items-center justify-center text-xs font-bold text-purple-500">5</div>
+                                    <div class="w-0.5"></div>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-white uppercase tracking-wider">Step 5: Test (Evaluating Interactive Prototypes)</h4>
+                                    <p class="text-xs text-gray-400 mt-1">
+                                        We monitor real-world actions, testing layout elements, asset loading sequences, and network variables to verify smooth frame-rates and intuitive navigation.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="adjust-box">
-            <div class="adjust-label">Duration</div>
-            <div class="adjust-val">20 min</div>
-            <div class="adjust-note">↑ from 15 min</div>
-          </div>
-          <div class="adjust-box">
-            <div class="adjust-label">Environment</div>
-            <div class="adjust-val">Forest</div>
-            <div class="adjust-note">Patient preference</div>
-          </div>
-        </div>
-        <div class="section-label">Mood log (patient-reported)</div>
-        <div class="mood-row">
-          <div class="mood-entry"><div class="mood-emoji">😰</div><div class="mood-date">Session 1</div></div>
-          <div class="mood-entry"><div class="mood-emoji">😐</div><div class="mood-date">Session 2</div></div>
-          <div class="mood-entry"><div class="mood-emoji">🙂</div><div class="mood-date">Session 3</div></div>
-          <div class="mood-entry mood-forecast"><div class="mood-emoji">😊</div><div class="mood-date">Target S4</div></div>
-        </div>
-        <button class="act-btn-primary btn-teal" style="margin:0 0.85rem 0.5rem;display:block">Update prescription &amp; schedule</button>
-        <div class="phone-nav">
-          <div class="nav-item"><i class="ti ti-users"></i><span>Patients</span></div>
-          <div class="nav-item nav-active nav-teal"><i class="ti ti-chart-line"></i><span>Progress</span></div>
-          <div class="nav-item"><i class="ti ti-calendar"></i><span>Schedule</span></div>
-          <div class="nav-item"><i class="ti ti-settings"></i><span>Settings</span></div>
-        </div>
-      </div>
-      <div class="screen-caption">Screen C — Clinician view: patient trends & session adjustment</div>
-    </div>
+        </main>
 
-    <!-- HEALTH D: Post-Therapy Summary -->
-    <div class="phone-wrap">
-      <div class="phone">
-        <div class="phone-bar ph-teal">
-          <div class="bar-eyebrow">Session complete</div>
-          <div class="bar-name">Calm Forest — Session 3</div>
-        </div>
-        <div class="result-hero">
-          <div class="result-ring result-ring-teal">✓</div>
-          <div class="result-title">Well done, Siti Liyana!</div>
-          <div class="result-sub">Lowest stress reading yet — keep going</div>
-        </div>
-        <div class="metric-row">
-          <div class="metric-box"><div class="metric-val col-teal">72</div><div class="metric-lbl">Avg bpm</div></div>
-          <div class="metric-box"><div class="metric-val col-teal">Low</div><div class="metric-lbl">Final stress</div></div>
-          <div class="metric-box"><div class="metric-val col-teal">14:32</div><div class="metric-lbl">Duration</div></div>
-        </div>
-        <div class="section-label">How are you feeling now?</div>
-        <div class="mood-picker">
-          <div class="mp-opt"><span>😰</span><div>Anxious</div></div>
-          <div class="mp-opt"><span>😐</span><div>Neutral</div></div>
-          <div class="mp-opt mp-sel"><span>🙂</span><div>Better</div></div>
-          <div class="mp-opt"><span>😊</span><div>Calm</div></div>
-        </div>
-        <div class="hint-box hint-teal">
-          <i class="ti ti-notes hint-icon col-teal"></i>
-          <div class="hint-text">Your mood log will be shared with Dr. Amirah before your next session. Any notes to add?</div>
-        </div>
-        <textarea class="notes-field" placeholder="Optional notes for your therapist..."></textarea>
-        <div class="section-label">Next session</div>
-        <div class="next-session-card">
-          <div class="ns-icon"><i class="ti ti-calendar"></i></div>
-          <div class="ns-info">
-            <div class="ns-title">Session 4 — Calm Forest Level 3</div>
-            <div class="ns-sub">Scheduled Thu 26 Jun · 3:00 PM</div>
-          </div>
-        </div>
-        <div class="dual-action">
-          <button class="act-btn"><i class="ti ti-home"></i> Home</button>
-          <button class="act-btn-primary btn-teal">Submit &amp; finish →</button>
-        </div>
-        <div class="phone-nav">
-          <div class="nav-item"><i class="ti ti-layout-grid"></i><span>Programmes</span></div>
-          <div class="nav-item"><i class="ti ti-player-play"></i><span>Sessions</span></div>
-          <div class="nav-item nav-active nav-teal"><i class="ti ti-chart-line"></i><span>Mood log</span></div>
-          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
-        </div>
-      </div>
-      <div class="screen-caption">Screen D — Post-therapy mood check & next session scheduling</div>
-    </div>
+        <!-- RIGHT PANEL: HIGH-FIDELITY MOBILE APP SIMULATOR (5-column space) -->
+        <section class="flex-grow xl:w-5/12 bg-[#020308] p-6 flex items-center justify-center overflow-y-auto relative z-20">
+            <!-- Neon backdrop elements -->
+            <div class="absolute w-96 h-96 bg-[#06defa]/5 rounded-full blur-3xl -top-20 -right-20 pointer-events-none"></div>
+            <div class="absolute w-96 h-96 bg-[#e3a857]/5 rounded-full blur-3xl -bottom-20 -left-20 pointer-events-none"></div>
 
-  </div>
-</section>
+            <!-- Phone Body Container -->
+            <div class="relative w-[340px] h-[680px] bg-[#0c0e17] rounded-[52px] border-[10px] border-[#1d2235] glow-accent flex flex-col overflow-hidden shadow-2xl z-10 transition-all duration-300">
+                <!-- Phone Top Bar & Ear Piece -->
+                <div class="absolute top-0 inset-x-0 h-8 bg-black/90 flex items-center justify-center z-50">
+                    <div class="w-24 h-4 bg-[#111] rounded-full flex items-center justify-between px-3">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        <div class="w-10 h-1 bg-gray-800 rounded"></div>
+                        <span class="w-1.5 h-1.5 rounded-full bg-blue-500/40"></span>
+                    </div>
+                </div>
 
-<!-- ══════════════════════════════════════════
-     SECTOR: TOURISM
-══════════════════════════════════════════ -->
-<section class="sector" id="sector-tourism">
-  <div class="sector-header">
-    <h1>WarisanXR — Heritage Tourism</h1>
-    <p>Immersive VR tours of Malaysian UNESCO sites — from destination browsing to real-world trip planning.</p>
-  </div>
-  <div class="screens-row screens-row--3">
+                <!-- DYNAMIC LOGIN SCREEN OVERLAY -->
+                <div id="login-screen" class="absolute inset-0 bg-[#070912] z-40 flex flex-col px-6 py-12 justify-between transition-transform duration-500">
+                    
+                    <!-- Background aesthetic inside phone login -->
+                    <div class="absolute inset-0 batik-overlay opacity-5 pointer-events-none"></div>
+                    
+                    <div class="text-center mt-6">
+                        <!-- Custom SVG 3D-effect Headset with Wau Wings Logo -->
+                        <div class="w-20 h-20 mx-auto mb-4 relative flex items-center justify-center">
+                            <svg class="w-full h-full drop-shadow-[0_0_15px_rgba(6,222,250,0.4)]" viewBox="0 0 100 100">
+                                <path d="M10 40 Q50 15 90 40 Q75 75 50 85 Q25 75 10 40 Z" fill="none" stroke="#e3a857" stroke-width="2.5" />
+                                <path d="M20 45 Q50 30 80 45 Q70 65 50 72 Q30 65 20 45 Z" fill="none" stroke="#06defa" stroke-width="2" />
+                                <circle cx="50" cy="50" r="10" fill="url(#gold-gradient)" opacity="0.8"/>
+                                <path d="M30 45 L70 45 Q75 55 50 62 Q25 55 30 45" fill="rgba(3, 7, 22, 0.9)" stroke="#e3a857" stroke-width="1.5" />
+                                <defs>
+                                    <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#e3a857" />
+                                        <stop offset="100%" stop-color="#f59e0b" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-black tracking-wide text-white">myVR Malaysia</h2>
+                        <p class="text-[10px] text-gray-400 mt-1 tracking-widest uppercase">Cultural Immersive Portal</p>
+                    </div>
 
-    <!-- TOUR A: Destination Browser -->
-    <div class="phone-wrap">
-      <div class="phone">
-        <div class="phone-bar ph-coral">
-          <div class="bar-eyebrow">WarisanXR · Malaysia Heritage</div>
-          <div class="bar-name">Discover Malaysia in VR</div>
-          <div class="inline-filters">
-            <span class="ifc ifc-coral active">All</span><span class="ifc ifc-coral">UNESCO</span><span class="ifc ifc-coral">Nature</span><span class="ifc ifc-coral">City</span>
-          </div>
-        </div>
-        <div class="search-bar"><i class="ti ti-search"></i><span>Search destinations...</span><i class="ti ti-map col-coral" style="margin-left:auto"></i></div>
-        <div class="section-label">Featured experience</div>
-        <div class="vr-card">
-          <div class="vr-thumb bg-coral"><i class="ti ti-building-arch"></i><span class="live-badge lb-coral">UNESCO</span><span class="star-badge">★ 4.9</span></div>
-          <div class="vr-info">
-            <div class="vr-title">George Town Heritage Walk</div>
-            <div class="vr-sub">Penang · 360° tour · 25 min · EN / BM / 中文</div>
-            <div class="tag-row"><span class="tag tag-coral">Heritage</span><span class="tag tag-green">Multilingual</span><span class="tag tag-blue">AI narrated</span></div>
-          </div>
-        </div>
-        <div class="section-label">Explore more destinations</div>
-        <div class="env-grid">
-          <div class="env-card">
-            <div class="env-top bg-amber"><i class="ti ti-building-mosque"></i></div>
-            <div class="env-label">A'Famosa, Malacca</div>
-            <div class="env-sub">Historical fort · 18 min</div>
-          </div>
-          <div class="env-card">
-            <div class="env-top bg-green"><i class="ti ti-trees"></i></div>
-            <div class="env-label">Kinabalu Park</div>
-            <div class="env-sub">Borneo rainforest</div>
-          </div>
-          <div class="env-card">
-            <div class="env-top bg-blue"><i class="ti ti-antenna"></i></div>
-            <div class="env-label">Petronas Towers</div>
-            <div class="env-sub">KL Skyline · Night</div>
-          </div>
-          <div class="env-card">
-            <div class="env-top bg-pink"><i class="ti ti-fish"></i></div>
-            <div class="env-label">Sipadan Island</div>
-            <div class="env-sub">Underwater dive</div>
-          </div>
-        </div>
-        <div class="section-label">Recently added</div>
-        <div class="list-item">
-          <div class="list-icon li-amber"><i class="ti ti-building-castle"></i></div>
-          <div class="list-text"><div class="list-title">Kota Belud, Sabah</div><div class="list-sub">Cultural village · 30 min · NEW</div></div>
-          <i class="ti ti-chevron-right muted"></i>
-        </div>
-        <div class="phone-nav">
-          <div class="nav-item nav-active nav-coral"><i class="ti ti-compass"></i><span>Discover</span></div>
-          <div class="nav-item"><i class="ti ti-player-play"></i><span>My tours</span></div>
-          <div class="nav-item"><i class="ti ti-bookmark"></i><span>Saved</span></div>
-          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
-        </div>
-      </div>
-      <div class="screen-caption">Screen A — Heritage destination browser & tour catalogue</div>
-    </div>
+                    <!-- Input Fields Layout -->
+                    <div class="space-y-4">
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-bold text-gray-400 tracking-wider uppercase">Username</label>
+                            <div class="relative">
+                                <span class="material-icons-outlined absolute left-3 top-2.5 text-xs text-gray-500">person</span>
+                                <input id="login-user" type="text" value="Azmi" class="w-full pl-8 pr-3 py-2 bg-gray-900/80 rounded-xl border border-gray-800 text-xs text-gray-200 outline-none focus:border-[#06defa] transition-all">
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-bold text-gray-400 tracking-wider uppercase">Password</label>
+                            <div class="relative">
+                                <span class="material-icons-outlined absolute left-3 top-2.5 text-xs text-gray-500">lock</span>
+                                <input type="password" value="••••••••••••" class="w-full pl-8 pr-3 py-2 bg-gray-900/80 rounded-xl border border-gray-800 text-xs text-gray-200 outline-none focus:border-[#06defa] transition-all">
+                            </div>
+                        </div>
 
-    <!-- TOUR B: Active VR Heritage Tour -->
-    <div class="phone-wrap">
-      <div class="phone">
-        <div class="phone-bar ph-dark">
-          <div class="bar-live-row">
-            <div class="live-dot-wrap live-coral"><div class="live-dot"></div><span>VR Tour · Stop 3/8</span></div>
-            <i class="ti ti-volume bar-icon-light"></i>
-          </div>
-        </div>
-        <div class="vr-viewport vp-coral">
-          <i class="ti ti-building-arch vp-icon"></i>
-          <div class="vp-label">Clan Jetties · 360° panoramic view</div>
-          <div class="vp-tags">
-            <span class="vp-tag vp-tag-coral">AI narration: EN</span>
-            <span class="vp-tag vp-tag-dim">Haptic feedback</span>
-          </div>
-        </div>
-        <div class="section-label">Current stop</div>
-        <div class="obj-box obj-coral">
-          <div class="obj-step col-coral">Chew Jetty — Clan jetties, 1800s</div>
-          <div class="obj-desc">These wooden jetties housed Hokkien Chinese settlers. Look around to explore the living quarters and temple still in use today.</div>
-        </div>
-        <div class="hint-box hint-coral">
-          <i class="ti ti-bulb hint-icon col-coral"></i>
-          <div class="hint-text">Tap any glowing hotspot in your view to unlock a deeper story about that object or location.</div>
-        </div>
-        <div class="section-label">Tour progress</div>
-        <div class="step-prog">
-          <div class="sp-step sp-done"></div><div class="sp-step sp-done"></div><div class="sp-step sp-done"></div>
-          <div class="sp-step sp-active sp-coral"></div>
-          <div class="sp-step sp-todo"></div><div class="sp-step sp-todo"></div><div class="sp-step sp-todo"></div><div class="sp-step sp-todo"></div>
-        </div>
-        <div class="section-label">Nearby hotspots</div>
-        <div class="hotspot-row">
-          <div class="hotspot"><i class="ti ti-building-community"></i><span>Temple</span></div>
-          <div class="hotspot"><i class="ti ti-camera"></i><span>Gallery</span></div>
-          <div class="hotspot"><i class="ti ti-messages"></i><span>Stories</span></div>
-          <div class="hotspot"><i class="ti ti-map-2"></i><span>History</span></div>
-        </div>
-        <div class="action-row">
-          <button class="act-btn"><i class="ti ti-arrow-left"></i> Prev</button>
-          <button class="act-btn-primary btn-coral">Next: Fort Cornwallis →</button>
-          <button class="act-btn"><i class="ti ti-map"></i> Map</button>
-        </div>
-        <div class="phone-nav">
-          <div class="nav-item"><i class="ti ti-compass"></i><span>Discover</span></div>
-          <div class="nav-item nav-active nav-coral"><i class="ti ti-player-play"></i><span>My tours</span></div>
-          <div class="nav-item"><i class="ti ti-bookmark"></i><span>Saved</span></div>
-          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
-        </div>
-      </div>
-      <div class="screen-caption">Screen B — Live 360° tour with AI narration & interactive hotspots</div>
-    </div>
+                        <div class="flex items-center justify-between text-[10px]">
+                            <label class="flex items-center gap-1.5 text-gray-400 cursor-pointer">
+                                <input type="checkbox" checked class="rounded bg-gray-900 border-gray-800 text-[#06defa] focus:ring-0">
+                                <span>Remember me</span>
+                            </label>
+                            <a href="#" class="text-[#06defa] hover:underline">Forgot password?</a>
+                        </div>
+                    </div>
 
-    <!-- TOUR C: Post-VR Trip Planner -->
-    <div class="phone-wrap">
-      <div class="phone">
-        <div class="phone-bar ph-coral">
-          <div class="bar-eyebrow">After your VR tour</div>
-          <div class="bar-name">Plan your real visit</div>
-        </div>
-        <div class="badge-notice bn-coral">
-          <i class="ti ti-award"></i>
-          <span>8 stops · 2 hotspots unlocked · Penang Heritage badge earned</span>
-        </div>
-        <div class="map-placeholder">
-          <div class="map-label">George Town, Penang — interactive map</div>
-          <div class="map-pin" style="top:30%;left:35%"></div>
-          <div class="map-pin" style="top:55%;left:60%"></div>
-          <div class="map-pin" style="top:45%;left:48%"></div>
-          <div class="map-pin map-pin-dim" style="top:65%;left:30%"></div>
-        </div>
-        <div class="section-label">Recommended itinerary (2 days)</div>
-        <div class="list-item">
-          <div class="list-icon li-coral"><i class="ti ti-building-arch"></i></div>
-          <div class="list-text"><div class="list-title">Day 1 AM — Clan Jetties walk</div><div class="list-sub">You explored this in VR · 45 min walk</div></div>
-          <i class="ti ti-circle-check col-teal"></i>
-        </div>
-        <div class="list-item">
-          <div class="list-icon li-coral"><i class="ti ti-building-castle"></i></div>
-          <div class="list-text"><div class="list-title">Day 1 PM — Fort Cornwallis</div><div class="list-sub">VR preview unlocked · Free entry</div></div>
-          <i class="ti ti-circle-check col-teal"></i>
-        </div>
-        <div class="list-item">
-          <div class="list-icon li-amber"><i class="ti ti-chef-hat"></i></div>
-          <div class="list-text"><div class="list-title">Day 2 — Street food trail</div><div class="list-sub">Add to plan · 3.8 km route</div></div>
-          <i class="ti ti-plus muted"></i>
-        </div>
-        <div class="dual-action">
-          <button class="act-btn"><i class="ti ti-share"></i> Share</button>
-          <button class="act-btn-primary btn-coral">Book hotel in Penang →</button>
-        </div>
-        <div class="phone-nav">
-          <div class="nav-item"><i class="ti ti-compass"></i><span>Discover</span></div>
-          <div class="nav-item"><i class="ti ti-player-play"></i><span>My tours</span></div>
-          <div class="nav-item nav-active nav-coral"><i class="ti ti-bookmark"></i><span>Saved</span></div>
-          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
-        </div>
-      </div>
-      <div class="screen-caption">Screen C — Post-VR trip planner: map, itinerary & real booking</div>
-    </div>
+                    <!-- CTA Actions -->
+                    <div class="space-y-3">
+                        <button onclick="handleLoginSubmit()" class="w-full py-3 bg-gradient-to-r from-[#06defa] to-[#e3a857] hover:from-[#05c4dd] hover:to-[#cca747] text-gray-950 text-xs font-extrabold rounded-xl shadow-lg transition-all transform hover:scale-[1.02] tracking-wider uppercase btn-pulse">
+                            Launch VR Experience
+                        </button>
+                        
+                        <!-- Third Party Logins -->
+                        <div class="flex items-center gap-3 py-1">
+                            <div class="h-px bg-gray-800 flex-1"></div>
+                            <span class="text-[10px] text-gray-500 uppercase">Or Sign In with</span>
+                            <div class="h-px bg-gray-800 flex-1"></div>
+                        </div>
 
-    <!-- TOUR D: Heritage Badge & Community -->
-    <div class="phone-wrap">
-      <div class="phone">
-        <div class="phone-bar ph-coral">
-          <div class="bar-name">My Heritage Journey</div>
-          <div class="bar-eyebrow">Achievements & community</div>
-        </div>
-        <div class="result-hero">
-          <div class="result-ring result-ring-coral">🏛️</div>
-          <div class="result-title">Heritage Explorer</div>
-          <div class="result-sub">3 UNESCO sites visited · 14 hotspots unlocked</div>
-        </div>
-        <div class="stat-row">
-          <div class="stat-box"><div class="stat-val col-coral">3</div><div class="stat-lbl">VR Tours</div></div>
-          <div class="stat-box"><div class="stat-val col-coral">14</div><div class="stat-lbl">Hotspots</div></div>
-          <div class="stat-box"><div class="stat-val col-amber">2</div><div class="stat-lbl">Badges</div></div>
-        </div>
-        <div class="section-label">Badges earned</div>
-        <div class="badge-grid">
-          <div class="badge-card badge-earned"><i class="ti ti-building-arch"></i><span>Penang</span></div>
-          <div class="badge-card badge-earned"><i class="ti ti-building-castle"></i><span>Malacca</span></div>
-          <div class="badge-card badge-locked"><i class="ti ti-lock"></i><span>Sabah</span></div>
-          <div class="badge-card badge-locked"><i class="ti ti-lock"></i><span>Sarawak</span></div>
-        </div>
-        <div class="section-label">Community highlights</div>
-        <div class="community-item">
-          <div class="avatar av-coral">LW</div>
-          <div class="community-text">
-            <div class="list-title">Lee Wei explored Sipadan Island</div>
-            <div class="list-sub">30 min dive · Shared a review · 2h ago</div>
-          </div>
-        </div>
-        <div class="community-item">
-          <div class="avatar av-amber">NR</div>
-          <div class="community-text">
-            <div class="list-title">Nurul completed Malacca tour</div>
-            <div class="list-sub">Earned Malacca badge · 5h ago</div>
-          </div>
-        </div>
-        <div class="phone-nav">
-          <div class="nav-item"><i class="ti ti-compass"></i><span>Discover</span></div>
-          <div class="nav-item"><i class="ti ti-player-play"></i><span>My tours</span></div>
-          <div class="nav-item"><i class="ti ti-bookmark"></i><span>Saved</span></div>
-          <div class="nav-item nav-active nav-coral"><i class="ti ti-user"></i><span>Profile</span></div>
-        </div>
-      </div>
-      <div class="screen-caption">Screen D — Heritage badges, community feed & achievements</div>
-    </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button class="py-2 bg-gray-900/60 hover:bg-gray-800/80 rounded-xl border border-gray-800 text-xs text-gray-300 flex items-center justify-center gap-1.5 transition-all">
+                                <span class="font-bold">Google</span>
+                            </button>
+                            <button class="py-2 bg-gray-900/60 hover:bg-gray-800/80 rounded-xl border border-gray-800 text-xs text-gray-300 flex items-center justify-center gap-1.5 transition-all">
+                                <span class="font-bold">Facebook</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
-  </div>
-</section>
+                <!-- PHONE SIMULATOR WORKSPACE STAGE -->
+                <div class="flex-grow flex flex-col pt-8 pb-12 overflow-hidden bg-[#05060b]">
+                    <!-- Simulated Phone Header Status Bar -->
+                    <div class="h-6 flex items-center justify-between px-5 py-3 text-[10px] text-gray-400 font-bold tracking-wide select-none">
+                        <span>9:41</span>
+                        <div class="flex items-center gap-1.5">
+                            <div class="flex items-center gap-0.5">
+                                <span class="w-1.5 h-2 bg-[#06defa] rounded-[1px] inline-block"></span>
+                                <span class="w-1.5 h-2.5 bg-[#06defa] rounded-[1px] inline-block"></span>
+                                <span class="w-1.5 h-3 bg-[#06defa] rounded-[1px] inline-block"></span>
+                                <span class="w-1.5 h-3.5 bg-[#06defa] rounded-[1px] inline-block" id="signal-bar-4"></span>
+                            </div>
+                            <span class="text-[#06defa] text-[10px] uppercase font-black" id="active-sim-network">5G</span>
+                            <span class="material-icons-outlined text-xs">battery_charging_full</span>
+                        </div>
+                    </div>
 
-<!-- ══════════════════════════════════════════
-     SECTOR: INDUSTRIAL
-══════════════════════════════════════════ -->
-<section class="sector" id="sector-industry">
-  <div class="sector-header">
-    <h1>SafeTrain VR — Industrial Safety</h1>
-    <p>VR safety training for oil & gas, manufacturing, and construction — covering both the worker and manager view.</p>
-  </div>
-  <div class="screens-row screens-row--3">
+                    <!-- DYNAMIC VIEWER WRAPPER -->
+                    <div class="flex-grow overflow-y-auto px-4 py-2 space-y-4">
 
-    <!-- IND A: Manager Dashboard -->
-    <div class="phone-wrap">
-      <div class="phone">
-        <div class="phone-bar ph-amber">
-          <div class="bar-eyebrow">SafeTrain VR · Manager</div>
-          <div class="bar-name">Training assignments</div>
-          <div class="inline-filters">
-            <span class="ifc ifc-amber active">All teams</span><span class="ifc ifc-amber">Platform A</span><span class="ifc ifc-amber">Maintenance</span>
-          </div>
-        </div>
-        <div class="stat-row">
-          <div class="stat-box"><div class="stat-val col-amber">24</div><div class="stat-lbl">Assigned</div></div>
-          <div class="stat-box"><div class="stat-val col-teal">18</div><div class="stat-lbl">Certified</div></div>
-          <div class="stat-box"><div class="stat-val col-red">3</div><div class="stat-lbl">Overdue</div></div>
-        </div>
-        <div class="alert-box alert-red"><i class="ti ti-alert-triangle"></i> 3 workers overdue — H2S safety cert expires Friday</div>
-        <div class="section-label">Module performance</div>
-        <div class="skill-list">
-          <div class="skill-row"><div class="skill-name">H2S gas leak response</div><div class="skill-score col-amber">75%</div></div>
-          <div class="prog-bar"><div class="prog-fill pf-amber" style="width:75%"></div></div>
-          <div class="skill-row"><div class="skill-name">Fire evacuation drill</div><div class="skill-score col-teal">92%</div></div>
-          <div class="prog-bar"><div class="prog-fill pf-teal" style="width:92%"></div></div>
-          <div class="skill-row"><div class="skill-name">PPE donning procedure</div><div class="skill-score col-red">61%</div></div>
-          <div class="prog-bar"><div class="prog-fill pf-red" style="width:61%"></div></div>
-        </div>
-        <div class="section-label">Workers pending</div>
-        <div class="list-item">
-          <div class="avatar av-amber" style="width:28px;height:28px;font-size:10px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center">MH</div>
-          <div class="list-text"><div class="list-title">Muhammad Hafiz</div><div class="list-sub">H2S cert · Due in 2 days</div></div>
-          <span class="status-pill pill-red">Urgent</span>
-        </div>
-        <div class="list-item">
-          <div class="avatar av-amber" style="width:28px;height:28px;font-size:10px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center">ZA</div>
-          <div class="list-text"><div class="list-title">Zulaikha Ahmad</div><div class="list-sub">PPE procedure · Due in 4 days</div></div>
-          <span class="status-pill pill-amber">Due soon</span>
-        </div>
-        <button class="act-btn-primary btn-amber" style="margin:0.4rem 0.85rem 0.5rem;display:block">Assign new training session</button>
-        <div class="phone-nav">
-          <div class="nav-item nav-active nav-amber"><i class="ti ti-layout-grid"></i><span>Dashboard</span></div>
-          <div class="nav-item"><i class="ti ti-users"></i><span>Workers</span></div>
-          <div class="nav-item"><i class="ti ti-certificate"></i><span>Certs</span></div>
-          <div class="nav-item"><i class="ti ti-settings"></i><span>Settings</span></div>
-        </div>
-      </div>
-      <div class="screen-caption">Screen A — Manager dashboard: team assignments & overdue alerts</div>
-    </div>
+                        <!-- VIEW 1: Discovery Hub Interface -->
+                        <div id="sim-screen-hub" class="space-y-4">
+                            <!-- Profile Welcome Card -->
+                            <div class="p-4 bg-gradient-to-br from-indigo-950/40 via-slate-900/80 to-slate-950 rounded-2xl border border-gray-800/80 relative overflow-hidden">
+                                <div class="absolute inset-0 batik-overlay pointer-events-none opacity-[0.03]"></div>
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <p class="text-[10px] text-[#06defa] font-bold uppercase tracking-wider">Selamat Datang</p>
+                                        <h3 class="text-sm font-black text-white" id="profile-greet-name">Azmi</h3>
+                                    </div>
+                                    <span class="text-[10px] font-extrabold bg-[#e3a857]/10 text-[#e3a857] px-2 py-0.5 rounded-full border border-[#e3a857]/20">Points: 1,250</span>
+                                </div>
+                                <p class="text-[10px] text-gray-400 leading-normal">Ready to enter spatial portals or trade your authentic cultural clothing assets?</p>
+                            </div>
 
-    <!-- IND B: Worker VR Safety Scenario -->
-    <div class="phone-wrap">
-      <div class="phone">
-        <div class="phone-bar ph-dark">
-          <div class="bar-live-row">
-            <div class="live-dot-wrap"><div class="live-dot"></div><span>VR Drill · 04:52</span></div>
-            <span style="font-size:10px;color:#EF9F27">Platform A</span>
-          </div>
-        </div>
-        <div class="vr-viewport vp-amber">
-          <i class="ti ti-alert-triangle vp-icon"></i>
-          <div class="vp-label">Offshore platform simulation</div>
-          <div class="vp-tags">
-            <span class="vp-tag vp-tag-amber">Danger zone active</span>
-            <span class="vp-tag vp-tag-dim">Full PPE required</span>
-          </div>
-        </div>
-        <div class="alert-box alert-red" style="margin:0.5rem 0.85rem 0.3rem"><i class="ti ti-alert-triangle"></i> Emergency: H2S gas leak detected. Alarm sounding — 3 minutes to muster.</div>
-        <div class="hint-box hint-amber">
-          <i class="ti ti-info-circle hint-icon col-amber"></i>
-          <div class="hint-text">H2S is heavier than air. Move upwind and to elevated ground. SCBA must be secured within 30 seconds of alarm.</div>
-        </div>
-        <div class="section-label">Response checklist</div>
-        <div class="checklist">
-          <div class="cl-item cl-done"><div class="cl-dot cl-dot-done"><i class="ti ti-check"></i></div><div class="cl-text">Identify leak source</div></div>
-          <div class="cl-item cl-done"><div class="cl-dot cl-dot-done"><i class="ti ti-check"></i></div><div class="cl-text">Activate alarm panel</div></div>
-          <div class="cl-item cl-active"><div class="cl-dot cl-dot-active">3</div><div class="cl-text fw-500 col-amber">Don SCBA breathing apparatus</div></div>
-          <div class="cl-item"><div class="cl-dot">4</div><div class="cl-text muted">Evacuate to muster point</div></div>
-        </div>
-        <div class="metric-row">
-          <div class="metric-box"><div class="metric-val col-amber">2:41</div><div class="metric-lbl">Time left</div></div>
-          <div class="metric-box"><div class="metric-val col-teal">3/4</div><div class="metric-lbl">Steps done</div></div>
-          <div class="metric-box"><div class="metric-val col-red">1</div><div class="metric-lbl">Error</div></div>
-        </div>
-        <div class="action-row">
-          <button class="act-btn"><i class="ti ti-pause"></i> Pause</button>
-          <button class="act-btn"><i class="ti ti-rotate"></i> Restart</button>
-          <button class="act-btn act-danger"><i class="ti ti-x"></i> Exit</button>
-        </div>
-        <div class="phone-nav">
-          <div class="nav-item"><i class="ti ti-layout-grid"></i><span>Dashboard</span></div>
-          <div class="nav-item nav-active nav-amber"><i class="ti ti-player-play"></i><span>Drill</span></div>
-          <div class="nav-item"><i class="ti ti-certificate"></i><span>Certs</span></div>
-          <div class="nav-item"><i class="ti ti-settings"></i><span>Settings</span></div>
-        </div>
-      </div>
-      <div class="screen-caption">Screen B — Worker view: live H2S emergency VR drill</div>
-    </div>
+                            <!-- Interactive Core Carousel Cards -->
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between text-[10px] font-black uppercase text-gray-400 tracking-wider px-1">
+                                    <span>Recommended Portals</span>
+                                    <span class="text-[#06defa]">See All</span>
+                                </div>
 
-    <!-- IND C: Cert Wallet -->
-    <div class="phone-wrap">
-      <div class="phone">
-        <div class="phone-bar ph-amber">
-          <div class="bar-eyebrow">SafeTrain VR</div>
-          <div class="bar-name">My certifications</div>
-        </div>
-        <div class="stat-row">
-          <div class="stat-box"><div class="stat-val col-teal">5</div><div class="stat-lbl">Valid</div></div>
-          <div class="stat-box"><div class="stat-val col-amber">1</div><div class="stat-lbl">Expiring</div></div>
-          <div class="stat-box"><div class="stat-val col-red">0</div><div class="stat-lbl">Expired</div></div>
-        </div>
-        <div class="section-label">Certificates</div>
-        <div class="list-item">
-          <div class="list-icon li-amber"><i class="ti ti-shield-check"></i></div>
-          <div class="list-text"><div class="list-title">H2S Gas Safety — Level 2</div><div class="list-sub">Valid until Dec 2026 · Score: 94%</div></div>
-          <i class="ti ti-download muted"></i>
-        </div>
-        <div class="list-item">
-          <div class="list-icon li-green"><i class="ti ti-fire-extinguisher"></i></div>
-          <div class="list-text"><div class="list-title">Fire Evacuation Warden</div><div class="list-sub">Valid until Aug 2026 · Score: 89%</div></div>
-          <i class="ti ti-download muted"></i>
-        </div>
-        <div class="list-item">
-          <div class="list-icon li-red"><i class="ti ti-helmet"></i></div>
-          <div class="list-text"><div class="list-title col-red">PPE Donning Procedure</div><div class="list-sub col-red">Expires in 7 days — renew now</div></div>
-          <i class="ti ti-alert-circle col-red"></i>
-        </div>
-        <div class="list-item">
-          <div class="list-icon li-blue"><i class="ti ti-droplet"></i></div>
-          <div class="list-text"><div class="list-title">Spill Containment Response</div><div class="list-sub">Valid until Mar 2027 · Score: 91%</div></div>
-          <i class="ti ti-download muted"></i>
-        </div>
-        <div class="list-item">
-          <div class="list-icon li-purple"><i class="ti ti-bolt"></i></div>
-          <div class="list-text"><div class="list-title">Electrical Lockout/Tagout</div><div class="list-sub">Valid until Jan 2027 · Score: 87%</div></div>
-          <i class="ti ti-download muted"></i>
-        </div>
-        <div class="dual-action">
-          <button class="act-btn"><i class="ti ti-share"></i> Share all</button>
-          <button class="act-btn-primary btn-amber">Renew PPE cert →</button>
-        </div>
-        <div class="phone-nav">
-          <div class="nav-item"><i class="ti ti-layout-grid"></i><span>Dashboard</span></div>
-          <div class="nav-item"><i class="ti ti-users"></i><span>Workers</span></div>
-          <div class="nav-item nav-active nav-amber"><i class="ti ti-certificate"></i><span>Certs</span></div>
-          <div class="nav-item"><i class="ti ti-settings"></i><span>Settings</span></div>
-        </div>
-      </div>
-      <div class="screen-caption">Screen C — Worker cert wallet: status, expiry & one-tap renewal</div>
-    </div>
+                                <!-- Melaka Card -->
+                                <div onclick="navigateToScreen('heritage')" class="group p-3 bg-gray-900/60 rounded-xl border border-gray-800 hover:border-[#06defa] cursor-pointer transition-all space-y-2">
+                                    <div class="h-20 bg-[#080d1e] rounded-lg flex items-center justify-center relative overflow-hidden">
+                                        <!-- Visual Graphic representing Melaka portal -->
+                                        <div class="absolute inset-0 bg-gradient-to-tr from-indigo-950 to-[#030408] z-0"></div>
+                                        <div class="absolute -bottom-4 -right-4 w-20 h-20 rounded-full bg-[#06defa]/10 blur-xl"></div>
+                                        <!-- Wireframe project line visualizer -->
+                                        <div class="border border-dashed border-[#06defa]/30 rounded p-2 z-10 w-24 text-center">
+                                            <span class="text-[8px] font-black text-[#06defa] block code-font">MELAKA PORTAL</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h4 class="text-xs font-bold text-gray-200">A Famosa Time Jump</h4>
+                                            <p class="text-[9px] text-gray-500">1511 Portuguese Era Reconstruction</p>
+                                        </div>
+                                        <span class="material-icons-outlined text-sm text-[#06defa]">arrow_forward</span>
+                                    </div>
+                                </div>
 
-    <!-- IND D: Drill Debrief -->
-    <div class="phone-wrap">
-      <div class="phone">
-        <div class="phone-bar ph-amber">
-          <div class="bar-eyebrow">Drill complete</div>
-          <div class="bar-name">H2S Gas Leak Scenario</div>
-        </div>
-        <div class="result-hero">
-          <div class="result-ring result-ring-amber">B+</div>
-          <div class="result-title">Good response, Hafiz!</div>
-          <div class="result-sub">1 procedural error — review SCBA donning sequence</div>
-        </div>
-        <div class="metric-row">
-          <div class="metric-box"><div class="metric-val col-amber">82%</div><div class="metric-lbl">Score</div></div>
-          <div class="metric-box"><div class="metric-val col-teal">2:31</div><div class="metric-lbl">Evacuation time</div></div>
-          <div class="metric-box"><div class="metric-val col-red">1</div><div class="metric-lbl">Errors</div></div>
-        </div>
-        <div class="section-label">Debrief — what happened</div>
-        <div class="hint-box hint-amber">
-          <i class="ti ti-alert-triangle hint-icon col-amber"></i>
-          <div class="hint-text">Error at step 3: SCBA face seal was not fully checked before proceeding. This would cause gas exposure in a real emergency.</div>
-        </div>
-        <div class="section-label">Skill breakdown</div>
-        <div class="skill-list">
-          <div class="skill-row"><div class="skill-name">Hazard identification</div><div class="skill-score col-teal">100%</div></div>
-          <div class="prog-bar"><div class="prog-fill pf-teal" style="width:100%"></div></div>
-          <div class="skill-row"><div class="skill-name">Alarm activation</div><div class="skill-score col-teal">95%</div></div>
-          <div class="prog-bar"><div class="prog-fill pf-teal" style="width:95%"></div></div>
-          <div class="skill-row"><div class="skill-name">SCBA donning procedure</div><div class="skill-score col-red">60%</div></div>
-          <div class="prog-bar"><div class="prog-fill pf-red" style="width:60%"></div></div>
-          <div class="skill-row"><div class="skill-name">Evacuation route</div><div class="skill-score col-teal">90%</div></div>
-          <div class="prog-bar"><div class="prog-fill pf-teal" style="width:90%"></div></div>
-        </div>
-        <div class="unlock-box unlock-amber">
-          <i class="ti ti-lock-open"></i>
-          <div>
-            <div class="unlock-title">Score 85%+ to earn H2S Level 2 cert</div>
-            <div class="unlock-sub">You need 3 more marks — retry the drill</div>
-          </div>
-        </div>
-        <div class="dual-action">
-          <button class="act-btn"><i class="ti ti-refresh"></i> Retry drill</button>
-          <button class="act-btn-primary btn-amber">Review SCBA guide →</button>
-        </div>
-        <div class="phone-nav">
-          <div class="nav-item"><i class="ti ti-layout-grid"></i><span>Dashboard</span></div>
-          <div class="nav-item nav-active nav-amber"><i class="ti ti-player-play"></i><span>Drill</span></div>
-          <div class="nav-item"><i class="ti ti-certificate"></i><span>Certs</span></div>
-          <div class="nav-item"><i class="ti ti-settings"></i><span>Settings</span></div>
-        </div>
-      </div>
-      <div class="screen-caption">Screen D — Post-drill debrief: error review & retry flow</div>
-    </div>
+                                <!-- Pasar Malam Card -->
+                                <div onclick="navigateToScreen('pasar_malam')" class="p-3 bg-gray-900/60 rounded-xl border border-gray-800 hover:border-[#e3a857] cursor-pointer transition-all space-y-2">
+                                    <div class="h-20 bg-[#080d1e] rounded-lg flex items-center justify-center relative overflow-hidden">
+                                        <div class="absolute inset-0 bg-gradient-to-tr from-[#1b150c] to-[#030408] z-0"></div>
+                                        <div class="absolute -bottom-4 -right-4 w-20 h-20 rounded-full bg-[#e3a857]/10 blur-xl"></div>
+                                        <div class="border border-dashed border-[#e3a857]/30 rounded p-2 z-10 w-24 text-center">
+                                            <span class="text-[8px] font-black text-[#e3a857] block code-font">PASAR MALAM</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h4 class="text-xs font-bold text-gray-200">Immersive Social Bazaar</h4>
+                                            <p class="text-[9px] text-gray-500">Interactive 3D Artisanal Crafts</p>
+                                        </div>
+                                        <span class="material-icons-outlined text-sm text-[#e3a857]">shopping_bag</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-  </div>
-</section>
+                        <!-- VIEW 2: Cultural Heritage Portal (A Famosa Interactive 3D Wireframe Canvas) -->
+                        <div id="sim-screen-heritage" class="hidden space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="text-xs font-bold text-gray-200 uppercase tracking-wider">A Famosa Reconstruction</h3>
+                                    <p class="text-[9px] text-gray-500">Visual Reconstruction Engine</p>
+                                </div>
+                                <span class="text-[9px] font-bold text-[#e3a857] uppercase border border-[#e3a857]/20 px-1.5 py-0.5 rounded bg-[#e3a857]/5">GEOFENCED</span>
+                            </div>
 
-<!-- ══════════════════════════════════════════
-     SECTOR: REAL ESTATE
-══════════════════════════════════════════ -->
-<section class="sector" id="sector-realestate">
-  <div class="sector-header">
-    <h1>PropVR — Virtual Real Estate</h1>
-    <p>Immersive 3D property walkthroughs, AI interior design overlays, and direct agent booking.</p>
-  </div>
-  <div class="screens-row screens-row--3">
+                            <!-- 3D projection Canvas container -->
+                            <div class="relative h-44 bg-gray-950 rounded-2xl border border-gray-800 overflow-hidden flex flex-col justify-end p-2">
+                                <div class="absolute inset-x-0 top-2 flex items-center justify-between px-3 z-20">
+                                    <span class="text-[8px] code-font text-emerald-400 flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-ping"></span>
+                                        <span>AR OVERLAY ONLINE</span>
+                                    </span>
+                                    <span class="text-[8px] code-font text-gray-500">FPS: 60/s</span>
+                                </div>
+                                <canvas id="heritage-projection-canvas" class="absolute inset-0 w-full h-full z-10"></canvas>
+                                
+                                <!-- Spatial Overlay details -->
+                                <div class="z-20 p-2 bg-black/70 rounded-lg border border-gray-800 flex items-center justify-between text-[9px]">
+                                    <span class="text-gray-400">Adaptive Texture Resolution:</span>
+                                    <span class="font-bold text-[#06defa]" id="network-resolution-level">HD High Polygon (5G)</span>
+                                </div>
+                            </div>
 
-    <!-- RE A: Property Listings -->
-    <div class="phone-wrap">
-      <div class="phone">
-        <div class="phone-bar ph-blue">
-          <div class="bar-eyebrow">PropVR · Real Estate</div>
-          <div class="bar-name">Browse properties</div>
-          <div class="inline-filters">
-            <span class="ifc ifc-blue active">All</span><span class="ifc ifc-blue">Buy</span><span class="ifc ifc-blue">Rent</span><span class="ifc ifc-blue">Commercial</span>
-          </div>
-        </div>
-        <div class="search-bar"><i class="ti ti-search"></i><span>KL, Petaling Jaya, Cyberjaya...</span><i class="ti ti-adjustments col-blue" style="margin-left:auto"></i></div>
-        <div class="section-label">Featured VR listings</div>
-        <div class="vr-card">
-          <div class="vr-thumb bg-blue"><i class="ti ti-building"></i><span class="live-badge lb-blue">VR Ready</span><span class="star-badge">★ 4.8</span></div>
-          <div class="vr-info">
-            <div class="vr-title">KLCC Penthouse — 3 Bed, 2 Bath</div>
-            <div class="vr-sub">Kuala Lumpur · RM 2.4M · 1,850 sqft</div>
-            <div class="tag-row"><span class="tag tag-blue">VR Tour</span><span class="tag tag-green">AI Design</span><span class="tag tag-purple">Furnished</span></div>
-          </div>
-        </div>
-        <div class="exp-list">
-          <div class="exp-item">
-            <div class="exp-thumb bg-blue"><i class="ti ti-home"></i></div>
-            <div class="exp-info">
-              <div class="exp-title">Mont Kiara — 2 Bed Condo</div>
-              <div class="exp-meta">RM 950K · VR tour available</div>
+                            <!-- Era Selector Panel -->
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Historical Milestone Timeline</label>
+                                <div class="grid grid-cols-4 gap-1.5 text-[9px] text-center">
+                                    <button id="eraBtn-1511" onclick="selectSimulationEra('1511')" class="py-2 rounded-lg bg-[#06defa]/10 text-[#06defa] border border-[#06defa]/30 font-bold transition-all uppercase">1511<br>Portg.</button>
+                                    <button id="eraBtn-1641" onclick="selectSimulationEra('1641')" class="py-2 rounded-lg bg-gray-900 border border-gray-800 text-gray-400 hover:text-gray-200 transition-all uppercase">1641<br>Dutch</button>
+                                    <button id="eraBtn-1795" onclick="selectSimulationEra('1795')" class="py-2 rounded-lg bg-gray-900 border border-gray-800 text-gray-400 hover:text-gray-200 transition-all uppercase">1795<br>Brit.</button>
+                                    <button id="eraBtn-2026" onclick="selectSimulationEra('2026')" class="py-2 rounded-lg bg-gray-900 border border-gray-800 text-gray-400 hover:text-gray-200 transition-all uppercase">2026<br>Ruins</button>
+                                </div>
+                            </div>
+
+                            <!-- High-Fidelity Safety Transparent Guard Box overlay notification -->
+                            <div class="p-3 bg-rose-500/10 border border-rose-500/20 rounded-xl text-[9px] text-rose-300 leading-normal flex items-start gap-2">
+                                <span class="material-icons-outlined text-xs text-rose-400 mt-0.5">report_problem</span>
+                                <span><strong>SAFETY ALERT:</strong> transparent boundary guard (Guardian Grid) activated. Stay aware of physical surroundings while looking through the time-travel window.</span>
+                            </div>
+                        </div>
+
+                        <!-- VIEW 3: Cross-Platform Batik Customization Studio -->
+                        <div id="sim-screen-avatar" class="hidden space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="text-xs font-bold text-gray-200 uppercase tracking-wider">Avatar Identity customizer</h3>
+                                    <p class="text-[9px] text-gray-500">Cross-Platform WebXR Outfitting</p>
+                                </div>
+                                <span class="text-[9px] font-bold text-purple-400 bg-purple-500/10 px-1.5 py-0.5 rounded border border-purple-500/20">LOW-POLY</span>
+                            </div>
+
+                            <!-- Avatar Rendering Viewport Canvas -->
+                            <div class="relative h-44 bg-gray-950 rounded-2xl border border-gray-800 flex items-center justify-center">
+                                <div class="absolute inset-0 batik-overlay pointer-events-none opacity-[0.05]"></div>
+                                <canvas id="avatar-studio-canvas" class="absolute inset-0 w-full h-full z-10"></canvas>
+                                
+                                <!-- Overlay equipped metadata indicator -->
+                                <div class="absolute top-2 left-2 z-20 px-2 py-0.5 rounded bg-black/60 border border-gray-800 text-[8px] text-gray-300">
+                                    Skin: <span class="font-bold text-[#e3a857]" id="avatar-equipped-skin">Default</span>
+                                </div>
+                            </div>
+
+                            <!-- Custom Cultural Textile Swatch Grid -->
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Batik / Textile Outfits</label>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <button onclick="applyAvatarTextile('Songket', '#e3a857')" class="p-2 rounded-xl bg-gray-900 border border-gray-800 hover:border-[#e3a857] transition-all flex flex-col items-center gap-1">
+                                        <div class="w-6 h-6 rounded-full bg-[#e3a857]/80 shadow"></div>
+                                        <span class="text-[9px] text-gray-300 font-bold">Gold Songket</span>
+                                    </button>
+                                    <button onclick="applyAvatarTextile('Batik', '#06defa')" class="p-2 rounded-xl bg-gray-900 border border-gray-800 hover:border-[#06defa] transition-all flex flex-col items-center gap-1">
+                                        <div class="w-6 h-6 rounded-full bg-[#06defa]/80 shadow"></div>
+                                        <span class="text-[9px] text-gray-300 font-bold">Urban Teal</span>
+                                    </button>
+                                    <button onclick="applyAvatarTextile('Kebaya', '#ec4899')" class="p-2 rounded-xl bg-gray-900 border border-gray-800 hover:border-[#ec4899] transition-all flex flex-col items-center gap-1">
+                                        <div class="w-6 h-6 rounded-full bg-[#ec4899]/80 shadow"></div>
+                                        <span class="text-[9px] text-gray-300 font-bold">Sunset Kebaya</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VIEW 4: Immersive "Pasar Malam" Social Commerce with checkout modal -->
+                        <div id="sim-screen-pasar_malam" class="hidden space-y-4 relative">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="text-xs font-bold text-gray-200 uppercase tracking-wider">Pasar Malam Immersive Bazaar</h3>
+                                    <p class="text-[9px] text-gray-500">Live Social Commerce Space</p>
+                                </div>
+                                <span class="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">MULTIPLE USERS</span>
+                            </div>
+
+                            <!-- Showcase View Card for Handmade Wau Kite Product -->
+                            <div class="p-3 bg-gray-900/40 rounded-xl border border-gray-800/80 space-y-2 relative overflow-hidden">
+                                <div class="flex gap-3">
+                                    <div class="w-16 h-16 bg-[#080b15] border border-gray-800 rounded-lg flex items-center justify-center text-xs">
+                                        <span class="material-icons-outlined text-[#e3a857] text-3xl">air</span>
+                                    </div>
+                                    <div class="flex-1 space-y-1">
+                                        <div class="flex items-center justify-between">
+                                            <h4 class="text-xs font-black text-white">Traditional Wau Kite</h4>
+                                            <span class="text-[10px] font-extrabold text-[#e3a857]">RM 45.00</span>
+                                        </div>
+                                        <p class="text-[9px] text-gray-400 leading-normal">Premium gold-gilded, hand-carved bamboo frame with native floral motifs.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between pt-1">
+                                    <span class="text-[8px] text-gray-500">Photogrammetry Scan: V2</span>
+                                    <button onclick="triggerAppCheckoutModal()" class="px-3 py-1.5 bg-[#e3a857] hover:bg-[#cca747] text-gray-950 font-bold text-[9px] rounded-lg tracking-wider uppercase transition-all">
+                                        Place Order
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Simulated Real-time Community Voice/Text Chat Stream -->
+                            <div class="space-y-1.5">
+                                <label class="text-[9px] font-bold text-gray-400 tracking-wider uppercase">Live Chat Feed</label>
+                                <div id="sim-chat-box" class="h-20 bg-gray-950 rounded-xl border border-gray-900 p-2 overflow-y-auto text-[10px] space-y-1 code-font">
+                                    <div class="text-[#06defa]"><span class="font-bold text-gray-300">Zul:</span> Jom ke Pasar Malam!</div>
+                                    <div class="text-[#e3a857]"><span class="font-bold text-gray-300">Siti:</span> Cantik wau itu.</div>
+                                    <div class="text-purple-400"><span class="font-bold text-gray-300">Adam:</span> Spatial audio is incredibly clear.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VIEW 5: P2P Collaborative Classroom Sync (Adaptive stability parameters) -->
+                        <div id="sim-screen-classroom" class="hidden space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="text-xs font-bold text-gray-200 uppercase tracking-wider">Interactive Science Module</h3>
+                                    <p class="text-[9px] text-gray-500">P2P Classroom Collaboration</p>
+                                </div>
+                                <span class="text-[9px] font-bold text-blue-400 bg-blue-500/10 px-1.5 py-0.5 rounded border border-blue-500/20">WEBRTC P2P</span>
+                            </div>
+
+                            <!-- 3D DNA Canvas Viewport -->
+                            <div class="relative h-44 bg-gray-950 rounded-2xl border border-gray-800 flex items-center justify-center">
+                                <canvas id="classroom-dna-canvas" class="absolute inset-0 w-full h-full z-10"></canvas>
+                                
+                                <!-- Latency status widget block -->
+                                <div class="absolute bottom-2 inset-x-2 z-20 p-2 bg-black/80 rounded-lg border border-gray-900 flex items-center justify-between text-[9px] code-font">
+                                    <span class="text-gray-400 flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-ping"></span>
+                                        <span>Peer Sync: <span id="classroom-peer-count">3</span> Active</span>
+                                    </span>
+                                    <span class="text-gray-400">Delay: <span id="p2p-latency-display" class="font-bold text-emerald-400">12ms</span></span>
+                                </div>
+                            </div>
+
+                            <!-- P2P Classroom Synchronization stability parameter slider -->
+                            <div class="p-3 bg-gray-900/30 rounded-xl border border-gray-800/80 space-y-2">
+                                <div class="flex justify-between items-center text-[10px]">
+                                    <span class="text-gray-300">Simulate Network Jitter:</span>
+                                    <span id="jitter-percentage-lbl" class="font-bold text-emerald-400">Optimal (12ms)</span>
+                                </div>
+                                <input type="range" min="0" max="100" value="0" id="class-jitter-range" oninput="adjustSimulationJitter(this.value)" class="w-full h-1 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-[#06defa]">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- PHONE APP PERSISTENT NAVIGATION BAR -->
+                    <nav class="h-14 border-t border-gray-900 bg-black/80 flex items-center justify-around px-2 z-30 select-none">
+                        <button onclick="navigateToScreen('hub')" id="navBtn-hub" class="flex flex-col items-center justify-center text-[#06defa] transition-colors">
+                            <span class="material-icons-outlined text-lg">explore</span>
+                            <span class="text-[8px] font-extrabold uppercase mt-0.5">Hub</span>
+                        </button>
+                        <button onclick="navigateToScreen('heritage')" id="navBtn-heritage" class="flex flex-col items-center justify-center text-gray-500 hover:text-gray-200 transition-colors">
+                            <span class="material-icons-outlined text-lg">history_edu</span>
+                            <span class="text-[8px] font-extrabold uppercase mt-0.5">Heritage</span>
+                        </button>
+                        <button onclick="navigateToScreen('avatar')" id="navBtn-avatar" class="flex flex-col items-center justify-center text-gray-500 hover:text-gray-200 transition-colors">
+                            <span class="material-icons-outlined text-lg">person_search</span>
+                            <span class="text-[8px] font-extrabold uppercase mt-0.5">Studio</span>
+                        </button>
+                        <button onclick="navigateToScreen('pasar_malam')" id="navBtn-pasar_malam" class="flex flex-col items-center justify-center text-gray-500 hover:text-gray-200 transition-colors">
+                            <span class="material-icons-outlined text-lg">storefront</span>
+                            <span class="text-[8px] font-extrabold uppercase mt-0.5">Bazaar</span>
+                        </button>
+                        <button onclick="navigateToScreen('classroom')" id="navBtn-classroom" class="flex flex-col items-center justify-center text-gray-500 hover:text-gray-200 transition-colors">
+                            <span class="material-icons-outlined text-lg">groups</span>
+                            <span class="text-[8px] font-extrabold uppercase mt-0.5">Class</span>
+                        </button>
+                    </nav>
+                </div>
+
+                <!-- PHONE PHYSICAL SYSTEM INTERACTION PANEL (Bottom home line) -->
+                <div class="absolute bottom-1 inset-x-0 h-4 flex items-center justify-center z-50">
+                    <div class="w-24 h-1 bg-gray-500/80 rounded-full cursor-pointer hover:bg-gray-400" onclick="handlePhysicalHomePress()"></div>
+                </div>
+
+                <!-- DYNAMIC APPLICATION TRANSACTION MODAL PANEL -->
+                <div id="checkout-modal" class="absolute inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex-col justify-end transition-all">
+                    <div class="p-6 bg-[#0c0e17] rounded-t-[32px] border-t border-gray-800 space-y-4 text-center">
+                        <div class="w-12 h-12 bg-emerald-500/20 border border-emerald-500 rounded-full flex items-center justify-center mx-auto">
+                            <span class="material-icons-outlined text-emerald-400 text-2xl">check_circle</span>
+                        </div>
+                        <div class="space-y-1">
+                            <h3 class="text-sm font-black text-white">Order Processed Successfully</h3>
+                            <p class="text-[10px] text-gray-400 leading-normal">Your order for the Handcrafted Wau Kite is on its way. Track shipping steps inside your WebXR profile.</p>
+                        </div>
+                        <button onclick="closeAppCheckoutModal()" class="w-full py-2.5 bg-gradient-to-r from-[#06defa] to-[#e3a857] text-gray-950 font-extrabold text-xs rounded-xl uppercase tracking-wider">
+                            Close Window
+                        </button>
+                    </div>
+                </div>
+
             </div>
-            <i class="ti ti-bookmark muted"></i>
-          </div>
-          <div class="exp-item">
-            <div class="exp-thumb bg-purple"><i class="ti ti-building-skyscraper"></i></div>
-            <div class="exp-info">
-              <div class="exp-title">Bangsar South — Studio</div>
-              <div class="exp-meta">RM 2,800/mo · VR tour available</div>
+        </section>
+    </div>
+
+    <!-- PERSISTENT CONTROL PLATFORM FOOTER -->
+    <footer class="flex-shrink-0 glass-panel border-t border-gray-800 px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4 z-40">
+        <div class="flex flex-wrap items-center gap-4">
+            <span class="text-xs font-extrabold uppercase tracking-widest text-[#e3a857]">Engine Calibration Console:</span>
+            
+            <!-- Network Bandwidth toggle Switcher -->
+            <div class="flex items-center gap-2 px-3 py-1.5 bg-gray-900 rounded-xl border border-gray-800">
+                <span class="text-[10px] text-gray-400 font-bold uppercase">Simulate Signal:</span>
+                <div class="flex gap-1">
+                    <button id="netBtn-4G" onclick="toggleSimNetwork('4G')" class="px-2 py-0.5 rounded text-[9px] font-extrabold bg-gray-800 text-gray-400 transition-all uppercase">4G</button>
+                    <button id="netBtn-5G" onclick="toggleSimNetwork('5G')" class="px-2 py-0.5 rounded text-[9px] font-extrabold bg-[#06defa] text-gray-950 transition-all uppercase">5G</button>
+                </div>
             </div>
-            <i class="ti ti-bookmark muted"></i>
-          </div>
-          <div class="exp-item">
-            <div class="exp-thumb bg-teal"><i class="ti ti-home-2"></i></div>
-            <div class="exp-info">
-              <div class="exp-title">Cyberjaya — 4 Bed Terrace</div>
-              <div class="exp-meta">RM 780K · VR tour available</div>
-            </div>
-            <i class="ti ti-bookmark-filled col-blue"></i>
-          </div>
-        </div>
-        <div class="phone-nav">
-          <div class="nav-item nav-active nav-blue"><i class="ti ti-building"></i><span>Browse</span></div>
-          <div class="nav-item"><i class="ti ti-player-play"></i><span>VR Tours</span></div>
-          <div class="nav-item"><i class="ti ti-bookmark"></i><span>Saved</span></div>
-          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
-        </div>
-      </div>
-      <div class="screen-caption">Screen A — Property listings with VR-ready filter</div>
-    </div>
 
-    <!-- RE B: Active VR Property Tour -->
-    <div class="phone-wrap">
-      <div class="phone">
-        <div class="phone-bar ph-dark">
-          <div class="bar-live-row">
-            <div class="live-dot-wrap live-blue"><div class="live-dot"></div><span>VR Tour · Living Room</span></div>
-            <i class="ti ti-3d-cube-sphere bar-icon-light"></i>
-          </div>
+            <!-- Loyalty Points generator button -->
+            <button onclick="handlePointsIncrease()" class="px-3 py-1.5 bg-gray-900 hover:bg-gray-800 border border-gray-800 rounded-xl text-[10px] text-gray-200 font-bold transition-all flex items-center gap-1">
+                <span class="material-icons-outlined text-xs text-[#e3a857]">add_circle</span>
+                <span>GENERATE USER POINTS</span>
+            </button>
         </div>
-        <div class="vr-viewport vp-blue">
-          <i class="ti ti-building vp-icon"></i>
-          <div class="vp-label">KLCC Penthouse · 360° walkthrough</div>
-          <div class="vp-tags">
-            <span class="vp-tag vp-tag-blue">Hand navigation</span>
-            <span class="vp-tag vp-tag-dim">Natural light mode</span>
-          </div>
-        </div>
-        <div class="section-label">Current room</div>
-        <div class="obj-box obj-blue">
-          <div class="obj-step col-blue">Living Room — 420 sqft</div>
-          <div class="obj-desc">High ceiling at 14ft, floor-to-ceiling windows facing KLCC. Tap any surface to view material details or apply AI design styles.</div>
-        </div>
-        <div class="section-label">Room navigator</div>
-        <div class="room-nav">
-          <div class="room-btn room-active"><i class="ti ti-sofa"></i><span>Living</span></div>
-          <div class="room-btn"><i class="ti ti-bed"></i><span>Master</span></div>
-          <div class="room-btn"><i class="ti ti-chef-hat"></i><span>Kitchen</span></div>
-          <div class="room-btn"><i class="ti ti-bath"></i><span>Bath</span></div>
-          <div class="room-btn"><i class="ti ti-building-community"></i><span>Balcony</span></div>
-        </div>
-        <div class="section-label">AI design overlay</div>
-        <div class="design-styles">
-          <div class="ds-opt ds-active"><i class="ti ti-comet"></i><span>Modern</span></div>
-          <div class="ds-opt"><i class="ti ti-leaf"></i><span>Scandinavian</span></div>
-          <div class="ds-opt"><i class="ti ti-diamond"></i><span>Luxe</span></div>
-          <div class="ds-opt"><i class="ti ti-sun"></i><span>Minimalist</span></div>
-        </div>
-        <div class="action-row">
-          <button class="act-btn"><i class="ti ti-ruler"></i> Measure</button>
-          <button class="act-btn"><i class="ti ti-camera"></i> Snapshot</button>
-          <button class="act-btn-primary btn-blue">Book a viewing →</button>
-        </div>
-        <div class="phone-nav">
-          <div class="nav-item"><i class="ti ti-building"></i><span>Browse</span></div>
-          <div class="nav-item nav-active nav-blue"><i class="ti ti-player-play"></i><span>VR Tours</span></div>
-          <div class="nav-item"><i class="ti ti-bookmark"></i><span>Saved</span></div>
-          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
-        </div>
-      </div>
-      <div class="screen-caption">Screen B — Live VR property walkthrough with AI design overlay</div>
-    </div>
 
-    <!-- RE C: Agent Booking -->
-    <div class="phone-wrap">
-      <div class="phone">
-        <div class="phone-bar ph-blue">
-          <div class="bar-eyebrow">After your VR tour</div>
-          <div class="bar-name">Book a physical visit</div>
+        <div class="text-[10px] text-gray-500 font-medium code-font">
+            BUILD REVISION: 2.6.2026_PRODUCTION_STAGE
         </div>
-        <div class="badge-notice bn-blue">
-          <i class="ti ti-building"></i>
-          <span>KLCC Penthouse · 5 rooms explored · AI design saved</span>
-        </div>
-        <div class="section-label">Your agent</div>
-        <div class="agent-card">
-          <div class="avatar av-blue">AH</div>
-          <div class="agent-info">
-            <div class="agent-name">Ahmad Hafizi</div>
-            <div class="agent-sub">IQI Realty · ⭐ 4.9 · 312 deals</div>
-          </div>
-          <div class="agent-actions">
-            <i class="ti ti-brand-whatsapp col-teal"></i>
-            <i class="ti ti-phone col-blue"></i>
-          </div>
-        </div>
-        <div class="section-label">Choose a visit slot</div>
-        <div class="slot-grid">
-          <div class="slot-btn slot-active">Sat 28 Jun<br><span>10:00 AM</span></div>
-          <div class="slot-btn">Sat 28 Jun<br><span>2:00 PM</span></div>
-          <div class="slot-btn">Sun 29 Jun<br><span>11:00 AM</span></div>
-          <div class="slot-btn slot-taken">Sun 29 Jun<br><span>Taken</span></div>
-        </div>
-        <div class="section-label">Property summary</div>
-        <div class="prop-summary">
-          <div class="ps-row"><span class="ps-label">Address</span><span class="ps-val">KLCC, Kuala Lumpur</span></div>
-          <div class="ps-row"><span class="ps-label">Price</span><span class="ps-val col-blue">RM 2,400,000</span></div>
-          <div class="ps-row"><span class="ps-label">Size</span><span class="ps-val">1,850 sqft · 3 bed, 2 bath</span></div>
-          <div class="ps-row"><span class="ps-label">VR rooms explored</span><span class="ps-val col-teal">5 / 5</span></div>
-        </div>
-        <div class="dual-action">
-          <button class="act-btn"><i class="ti ti-share"></i> Share</button>
-          <button class="act-btn-primary btn-blue">Confirm visit →</button>
-        </div>
-        <div class="phone-nav">
-          <div class="nav-item"><i class="ti ti-building"></i><span>Browse</span></div>
-          <div class="nav-item"><i class="ti ti-player-play"></i><span>VR Tours</span></div>
-          <div class="nav-item nav-active nav-blue"><i class="ti ti-bookmark"></i><span>Saved</span></div>
-          <div class="nav-item"><i class="ti ti-user"></i><span>Profile</span></div>
-        </div>
-      </div>
-      <div class="screen-caption">Screen C — Post-VR tour: agent booking & physical visit scheduling</div>
-    </div>
+    </footer>
 
-  </div>
-</section>
+    <!-- SYSTEM SCRIPTING & DYNAMIC LOGIC -->
+    <script>
+        // System wide responsive configuration state parameters
+        const state = {
+            activeScreen: 'hub',
+            network: '5G',
+            selectedEra: '1511',
+            avatarOutfit: 'Default',
+            avatarColor: '#e3a857',
+            cartModalOpen: false,
+            loginScreen: true,
+            stabilizeVal: 98,
+            peers: 3,
+            latency: '12ms'
+        };
 
-</main>
+        // Static visual properties definitions
+        const ERA_COORDINATES = {
+            '1511': { height: 0.9, color: '#06defa', label: 'Portuguese Fortified Walls' },
+            '1641': { height: 0.75, color: '#3b82f6', label: 'Dutch Renovated Bastions' },
+            '1795': { height: 0.45, color: '#f59e0b', label: 'British Artillery Damage' },
+            '2026': { height: 0.15, color: '#ef4444', label: 'Modern Conserved Ruin Base' }
+        };
 
-<footer class="site-footer">
-  <div>VRMalaysia — UI/UX Prototype · Assignment Submission 2026</div>
-  <div>Built with HTML &amp; CSS · No frameworks · GitHub-ready</div>
-</footer>
+        // UI Initialization routines
+        window.onload = function() {
+            appendSystemLog("Workspace parsed successfully. Standby for user credentials verification.");
+            
+            // Start Canvas animation cycles
+            animateHeritageWireframe();
+            animateAvatarStudio();
+            animateClassroomDna();
 
-<script>
-function switchSector(id, btn) {
-  document.querySelectorAll('.sector').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.snav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('sector-' + id).classList.add('active');
-  btn.classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-</script>
+            // Run automated periodic message appending to chat feed to mimic spatial activity
+            startSimulatedChatInterval();
+        };
+
+        // Navigation state controllers
+        function switchReportTab(tabId) {
+            // Unset active buttons styling
+            ['analysis', 'features', 'methodology'].forEach(id => {
+                const btn = document.getElementById(`tabBtn-${id}`);
+                btn.className = btn.className.replace('border-[#06defa] text-[#06defa]', 'border-transparent text-gray-400');
+            });
+            // Set targeted button active
+            const targetBtn = document.getElementById(`tabBtn-${tabId}`);
+            targetBtn.className = targetBtn.className.replace('border-transparent text-gray-400', 'border-[#06defa] text-[#06defa]');
+
+            // Manage visible tabs panels
+            ['analysis', 'features', 'methodology'].forEach(id => {
+                document.getElementById(`section-${id}`).classList.add('hidden');
+            });
+            document.getElementById(`section-${tabId}`).classList.remove('hidden');
+            appendSystemLog(`System loaded report section: ${tabId.toUpperCase()}`);
+        }
+
+        // Login Page Handlers
+        function handleLoginSubmit() {
+            const userNameInput = document.getElementById('login-user').value || 'Azmi';
+            state.loginScreen = false;
+            
+            // Synchronize name field with main screen welcoming panel
+            document.getElementById('profile-greet-name').textContent = userNameInput;
+            document.getElementById('login-screen').style.transform = 'translateY(-100%)';
+            
+            appendSystemLog(`Verified identity: ${userNameInput.toUpperCase()}. Opening secure WebXR environment.`);
+        }
+
+        function handlePhysicalHomePress() {
+            if (!state.loginScreen) {
+                state.loginScreen = true;
+                document.getElementById('login-screen').style.transform = 'translateY(0%)';
+                appendSystemLog("System loaded login overlay state.");
+            }
+        }
+
+        // Sim Navigation buttons handlers
+        function navigateToScreen(screenId) {
+            if (state.loginScreen) return; // Prevent navigation on login cover state
+
+            // Deactivate existing tabs styling on phone sim
+            ['hub', 'heritage', 'avatar', 'pasar_malam', 'classroom'].forEach(id => {
+                document.getElementById(`sim-screen-${id}`).classList.add('hidden');
+                document.getElementById(`navBtn-${id}`).className = 'flex flex-col items-center justify-center text-gray-500 hover:text-gray-200 transition-colors';
+            });
+
+            // Activate chosen frame
+            document.getElementById(`sim-screen-${screenId}`).classList.remove('hidden');
+            document.getElementById(`navBtn-${screenId}`).className = 'flex flex-col items-center justify-center text-[#06defa] transition-colors';
+            state.activeScreen = screenId;
+
+            appendSystemLog(`Simulator screen change -> ${screenId.toUpperCase()}`);
+        }
+
+        // State Calibrator Controls logic
+        function toggleSimNetwork(netSpeed) {
+            state.network = netSpeed;
+
+            // Reset footer toggles style
+            ['4G', '5G'].forEach(v => {
+                const btn = document.getElementById(`netBtn-${v}`);
+                if (v === netSpeed) {
+                    btn.className = "px-2 py-0.5 rounded text-[9px] font-extrabold bg-[#06defa] text-gray-950 transition-all uppercase";
+                } else {
+                    btn.className = "px-2 py-0.5 rounded text-[9px] font-extrabold bg-gray-800 text-gray-400 transition-all uppercase";
+                }
+            });
+
+            // Sync visual labels inside simulator interface
+            document.getElementById('active-sim-network').textContent = netSpeed;
+            
+            const signalBar4 = document.getElementById('signal-bar-4');
+            const resLevelDisplay = document.getElementById('network-resolution-level');
+            const latencyDisp = document.getElementById('p2p-latency-display');
+
+            if (netSpeed === '4G') {
+                signalBar4.className = "w-1.5 h-3.5 bg-gray-700 rounded-[1px] inline-block";
+                resLevelDisplay.textContent = "Adaptive Low Polygon Model (4G)";
+                resLevelDisplay.className = "font-bold text-[#e3a857]";
+                
+                // Increase simulated latency response time inside classroom
+                state.latency = '54ms';
+                if (latencyDisp) {
+                    latencyDisp.textContent = '54ms';
+                    latencyDisp.className = 'font-bold text-[#e3a857]';
+                }
+                appendSystemLog("WebXR engine optimized model rendering density: low-poly compression triggered due to 4G connectivity.");
+            } else {
+                signalBar4.className = "w-1.5 h-3.5 bg-[#06defa] rounded-[1px] inline-block";
+                resLevelDisplay.textContent = "HD High Polygon Model (5G)";
+                resLevelDisplay.className = "font-bold text-[#06defa]";
+                
+                state.latency = '12ms';
+                if (latencyDisp) {
+                    latencyDisp.textContent = '12ms';
+                    latencyDisp.className = 'font-bold text-emerald-400';
+                }
+                appendSystemLog("WebXR engine restored high polygon assets: 5G network validated successfully.");
+            }
+        }
+
+        function handlePointsIncrease() {
+            appendSystemLog("Updating user metadata package on Web3 registry...");
+            const curVal = 1250 + Math.floor(Math.random() * 100) + 20;
+            // Scan current active containers and write new points metric
+            document.querySelectorAll('span').forEach(el => {
+                if (el.textContent.includes('Points:')) {
+                    el.textContent = `Points: ${curVal.toLocaleString()}`;
+                    appendSystemLog(`Registered new balance: +${curVal} loyalty rewards points.`);
+                }
+            });
+        }
+
+        // Timeline Portal Selection logic
+        function selectSimulationEra(eraYear) {
+            state.selectedEra = eraYear;
+
+            // Clear class tags on inactive buttons
+            ['1511', '1641', '1795', '2026'].forEach(y => {
+                document.getElementById(`eraBtn-${y}`).className = "py-2 rounded-lg bg-gray-900 border border-gray-800 text-gray-400 hover:text-gray-200 transition-all uppercase";
+            });
+
+            // Focus chosen milestone button
+            document.getElementById(`eraBtn-${eraYear}`).className = "py-2 rounded-lg bg-[#06defa]/10 text-[#06defa] border border-[#06defa]/30 font-bold transition-all uppercase";
+            
+            appendSystemLog(`Timeline leap triggered: rendering A Famosa relative to the ${eraYear} era.`);
+        }
+
+        // Avatar clothing customization logic
+        function applyAvatarTextile(textileName, hexColor) {
+            state.avatarOutfit = textileName;
+            state.avatarColor = hexColor;
+
+            // Sync visual feedback label on studio page
+            document.getElementById('avatar-equipped-skin').textContent = textileName;
+            document.getElementById('avatar-equipped-skin').style.color = hexColor;
+
+            appendSystemLog(`Outfitted WebXR Avatar with authentic textured material: ${textileName.toUpperCase()}`);
+        }
+
+        // Immersive Commerce modal triggers
+        function triggerAppCheckoutModal() {
+            document.getElementById('checkout-modal').classList.remove('hidden');
+            appendSystemLog("Simulated spatial audio confirmation check: purchase processed cleanly via peer framework.");
+        }
+
+        function closeAppCheckoutModal() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        // Classroom Jitter simulation handler
+        function adjustSimulationJitter(rangeVal) {
+            const label = document.getElementById('jitter-percentage-lbl');
+            const latencyDisp = document.getElementById('p2p-latency-display');
+            const peerCountDisp = document.getElementById('classroom-peer-count');
+
+            if (rangeVal < 25) {
+                label.textContent = `Optimal (${state.latency})`;
+                label.className = "font-bold text-emerald-400";
+                state.peers = 3;
+                if (latencyDisp) latencyDisp.textContent = state.latency;
+            } else if (rangeVal < 75) {
+                label.textContent = "Standard Latency Jitter (32ms)";
+                label.className = "font-bold text-[#e3a857]";
+                state.peers = 2;
+                if (latencyDisp) latencyDisp.textContent = "32ms";
+            } else {
+                label.textContent = "Severe Network Jitter (180ms)";
+                label.className = "font-bold text-rose-500";
+                state.peers = 1;
+                if (latencyDisp) latencyDisp.textContent = "180ms";
+            }
+
+            if (peerCountDisp) peerCountDisp.textContent = state.peers;
+        }
+
+        // Periodic simulated chat injector
+        function startSimulatedChatInterval() {
+            const testMessages = [
+                "Farah: Dynamic class is starting soon.",
+                "Siti: Love the Gold Songket texture on your jacket!",
+                "Adam: Just launched the Portuguese 3D scan.",
+                "Zul: Low-latency sync makes virtual whiteboard clean.",
+                "Farah: Interactive vectors look really stable."
+            ];
+
+            setInterval(() => {
+                if (state.activeScreen === 'pasar_malam') {
+                    const chatBox = document.getElementById('sim-chat-box');
+                    if (chatBox) {
+                        const randomMsg = testMessages[Math.floor(Math.random() * testMessages.length)];
+                        const chatDiv = document.createElement('div');
+                        chatDiv.className = "text-gray-400";
+                        chatDiv.innerHTML = `<span class="font-bold text-gray-300">${randomMsg.split(':')[0]}:</span>${randomMsg.split(':')[1]}`;
+                        
+                        chatBox.appendChild(chatDiv);
+                        // Maintain auto-scroll
+                        chatBox.scrollTop = chatBox.scrollHeight;
+                    }
+                }
+            }, 5000);
+        }
+
+        // Terminal Log Appender Helper
+        function appendSystemLog(logTxt) {
+            const container = document.getElementById('terminal-logs');
+            if (container) {
+                const now = new Date();
+                const timeStamp = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+                
+                const logDiv = document.createElement('div');
+                logDiv.className = "text-gray-400 transition-all";
+                logDiv.innerHTML = `<span class="text-gray-600">[${timeStamp}]</span> ${logTxt}`;
+                
+                container.appendChild(logDiv);
+                container.scrollTop = container.scrollHeight;
+            }
+        }
+
+
+        /* ==========================================================================
+           CANVAS ENGINE SIMULATOR LOOPS: HERITAGE PORTAL, AVATAR, & DNA
+           ========================================================================== */
+
+        // Screen 2: 3D Heritage Reconstruction Canvas
+        function animateHeritageWireframe() {
+            const canvas = document.getElementById('heritage-projection-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let rotationAngle = 0;
+
+            function draw() {
+                if (state.activeScreen !== 'heritage') {
+                    requestAnimationFrame(draw);
+                    return;
+                }
+
+                // Match canvas width bounding box size
+                const rect = canvas.getBoundingClientRect();
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                const cx = canvas.width / 2;
+                const cy = canvas.height / 2;
+                const size = 35;
+                const activeCfg = ERA_COORDINATES[state.selectedEra] || ERA_COORDINATES['1511'];
+
+                rotationAngle += 0.005;
+
+                // Draw ground perspective grid lines
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+                ctx.lineWidth = 1;
+                for (let i = -4; i <= 4; i++) {
+                    ctx.beginPath();
+                    ctx.moveTo(cx + (i * 20), cy);
+                    ctx.lineTo(cx + (i * 50), canvas.height);
+                    ctx.stroke();
+                }
+
+                // Draw 3D projected structural block relative to chosen timeline parameters
+                ctx.strokeStyle = activeCfg.color;
+                ctx.fillStyle = activeCfg.color + '15';
+                ctx.lineWidth = 1.5;
+
+                // Draw custom structural perspective polygons projecting A Famosa base bastions
+                const bastions = [
+                    { x: -size, y: size, z: 0 },
+                    { x: size, y: size, z: 0 },
+                    { x: size, y: -size, z: 0 },
+                    { x: -size, y: -size, z: 0 },
+                ];
+
+                const projected = bastions.map(p => {
+                    // Apply simple trigonometric rotation along the canvas perspective horizon
+                    const cosTheta = Math.cos(rotationAngle);
+                    const sinTheta = Math.sin(rotationAngle);
+                    const rx = p.x * cosTheta - p.y * sinTheta;
+                    const ry = p.x * sinTheta + p.y * cosTheta;
+                    
+                    // project to 2D
+                    const scale = 1.2;
+                    return {
+                        x: cx + rx * scale,
+                        y: cy + ry * 0.4 * scale - (activeCfg.height * 20)
+                    };
+                });
+
+                // Render structure wireframes
+                ctx.beginPath();
+                ctx.moveTo(projected[0].x, projected[0].y);
+                for (let i = 1; i < projected.length; i++) {
+                    ctx.lineTo(projected[i].x, projected[i].y);
+                }
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+
+                // Draw projection wire pillars to ground
+                ctx.strokeStyle = activeCfg.color + '40';
+                projected.forEach(p => {
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(p.x, p.y + (activeCfg.height * 40));
+                    ctx.stroke();
+                });
+
+                // Top holographic title text rendering inside canvas viewport
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 10px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(activeCfg.label.toUpperCase(), cx, 24);
+
+                requestAnimationFrame(draw);
+            }
+            requestAnimationFrame(draw);
+        }
+
+        // Screen 3: Avatar Studio Customization Viewport
+        function animateAvatarStudio() {
+            const canvas = document.getElementById('avatar-studio-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let pulseVal = 0;
+
+            function draw() {
+                if (state.activeScreen !== 'avatar') {
+                    requestAnimationFrame(draw);
+                    return;
+                }
+
+                const rect = canvas.getBoundingClientRect();
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                const cx = canvas.width / 2;
+                const cy = canvas.height / 2;
+                pulseVal += 0.03;
+
+                // Draw central platform
+                ctx.strokeStyle = 'rgba(6, 222, 250, 0.2)';
+                ctx.fillStyle = 'rgba(6, 222, 250, 0.03)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.ellipse(cx, cy + 50, 45, 12, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+
+                // Character silhouette rendering base
+                ctx.fillStyle = '#1e293b';
+                ctx.beginPath();
+                // Head
+                ctx.arc(cx, cy - 40, 14, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Torso & Legs custom drawing
+                ctx.beginPath();
+                ctx.moveTo(cx - 16, cy - 20);
+                ctx.lineTo(cx + 16, cy - 20);
+                ctx.lineTo(cx + 12, cy + 30);
+                ctx.lineTo(cx - 12, cy + 30);
+                ctx.closePath();
+                ctx.fill();
+
+                // Apply dynamic colored overlay if custom Batik/Songket textile is equipped
+                if (state.avatarOutfit !== 'Default') {
+                    ctx.fillStyle = state.avatarColor;
+                    ctx.globalAlpha = 0.4 + Math.sin(pulseVal) * 0.1;
+                    
+                    // Draw glowing pattern on jacket torso
+                    ctx.beginPath();
+                    ctx.moveTo(cx - 14, cy - 15);
+                    ctx.lineTo(cx + 14, cy - 15);
+                    ctx.lineTo(cx + 10, cy + 20);
+                    ctx.lineTo(cx - 10, cy + 20);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    ctx.strokeStyle = state.avatarColor;
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                    ctx.globalAlpha = 1.0;
+                }
+
+                requestAnimationFrame(draw);
+            }
+            requestAnimationFrame(draw);
+        }
+
+        // Screen 5: DNA Rotation Collaborative Classroom view
+        function animateClassroomDna() {
+            const canvas = document.getElementById('classroom-dna-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let cycle = 0;
+
+            function draw() {
+                if (state.activeScreen !== 'classroom') {
+                    requestAnimationFrame(draw);
+                    return;
+                }
+
+                const rect = canvas.getBoundingClientRect();
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                const cx = canvas.width / 2;
+                const cy = canvas.height / 2;
+                cycle += 0.015;
+
+                const nodesCount = 14;
+                const spacing = 10;
+                const amp = 40;
+
+                // Draw rotating double helix structure representing DNA spatial asset
+                for (let i = 0; i < nodesCount; i++) {
+                    const y = cy - (nodesCount * spacing / 2) + (i * spacing);
+                    const theta = cycle + (i * 0.4);
+                    
+                    // Node 1 projection
+                    const x1 = cx + Math.sin(theta) * amp;
+                    // Node 2 projection (inverse phase)
+                    const x2 = cx - Math.sin(theta) * amp;
+
+                    // Draw connection linkage wire
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(x1, y);
+                    ctx.lineTo(x2, y);
+                    ctx.stroke();
+
+                    // Render node circles
+                    ctx.fillStyle = '#06defa';
+                    ctx.beginPath();
+                    ctx.arc(x1, y, 4, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.fillStyle = '#e3a857';
+                    ctx.beginPath();
+                    ctx.arc(x2, y, 4, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // If teacher manipulates model, render ghost tracking indicator vectors (gold outlines)
+                    if (i === 6) {
+                        ctx.strokeStyle = '#e3a857';
+                        ctx.lineWidth = 1.5;
+                        ctx.beginPath();
+                        ctx.arc(x1, y, 9, 0, Math.PI * 2);
+                        ctx.stroke();
+                    }
+                }
+
+                // HUD labels inside educational modules
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 9px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText("COLLABORATIVE SPATIAL ASSET: DEOXYRIBONUCLEIC ACID", cx, 24);
+
+                requestAnimationFrame(draw);
+            }
+            requestAnimationFrame(draw);
+        }
+    </script>
 </body>
 </html>
